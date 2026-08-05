@@ -62,6 +62,7 @@
       border-radius: 50%;
     }
     .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; position: relative; z-index: 1; }
+    .hero-top > div { min-width: 0; }
     .hero h1 { margin: 0; font-size: 1.9rem; line-height: 1.18; letter-spacing: -.025em; text-wrap: balance; }
     .hero p { margin: 7px 0 0; color: oklch(.92 .025 225); font-size: .94rem; }
     .sun-mark { flex: 0 0 auto; width: 48px; height: 48px; color: oklch(.86 .16 74); }
@@ -75,7 +76,7 @@
     }
     .status-chip { padding: 6px 10px; border-radius: 999px; background: oklch(1 0 0 / .13); color: white; font-size: .82rem; font-weight: 700; }
 
-    .essentials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 14px 4px; }
+    .essentials { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 14px 14px 4px; }
     .essential {
       min-width: 0;
       padding: 14px;
@@ -132,8 +133,10 @@
     .time { padding-top: 13px; color: var(--muted); font-variant-numeric: tabular-nums; font-size: .8rem; font-weight: 700; text-align: right; }
     .dot { position: relative; z-index: 1; width: 12px; height: 12px; margin: 16px auto 0; border: 3px solid white; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
     .stop.transport .dot { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+    .stop.lodging .dot { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
     .stop-card { min-width: 0; padding: 13px 13px 12px; border-radius: var(--radius); background: var(--surface); }
     .stop.transport .stop-card { padding: 10px 13px; background: var(--surface-blue); }
+    .stop.lodging .stop-card { background: oklch(.96 .025 151); }
     .stop-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .stop h3 { margin: 0; font-size: 1rem; line-height: 1.35; }
     .duration { flex: 0 0 auto; padding: 3px 7px; border-radius: 999px; background: oklch(.9 .025 48); color: oklch(.39 .07 48); font-size: .69rem; font-weight: 750; }
@@ -178,9 +181,9 @@
     textarea { width: 100%; min-height: 120px; resize: vertical; padding: 12px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; line-height: 1.55; }
     .save-state { margin-top: 6px; color: var(--muted); font-size: .75rem; }
 
-    .info-section, .prep-section, .map-section { display: none; padding: 22px 14px 0; }
-    .info-section.active, .prep-section.active, .map-section.active { display: block; }
-    .info-section h2, .prep-section > h2, .map-section > h2 { margin: 0 0 12px; font-size: 1.28rem; }
+    .info-section, .prep-section, .map-section, .cost-section, .more-section { display: none; padding: 22px 14px 0; }
+    .info-section.active, .prep-section.active, .map-section.active, .cost-section.active, .more-section.active { display: block; }
+    .info-section h2, .prep-section > h2, .map-section > h2, .cost-section > h2, .more-section > h2 { margin: 0 0 12px; font-size: 1.28rem; }
     .prep-section .panel { margin-top: 12px; }
     .map-section > p { margin: -4px 0 14px; color: var(--muted); font-size: .84rem; }
     .map-frame { display: block; overflow: hidden; border-radius: var(--radius); background: var(--accent); }
@@ -193,6 +196,43 @@
     .info-list a { color: var(--accent); font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 3px; }
     .source-note { margin-top: 16px; color: var(--muted); font-size: .77rem; }
 
+    .cost-intro { margin: -4px 0 16px; color: var(--muted); font-size: .84rem; }
+    .cost-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .cost-total { padding: 14px; border-radius: var(--radius); background: var(--surface-blue); }
+    .cost-total:first-child { color: white; background: var(--accent); }
+    .cost-total span { display: block; color: inherit; opacity: .82; font-size: .76rem; font-weight: 700; }
+    .cost-total strong { display: block; margin-top: 3px; font-size: 1.24rem; font-variant-numeric: tabular-nums; }
+    .cost-total small { display: block; margin-top: 2px; color: inherit; opacity: .78; font-size: .72rem; }
+    .cost-group { margin-top: 24px; }
+    .cost-group + .cost-group { padding-top: 23px; border-top: 1px solid var(--line); }
+    .cost-group-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+    .cost-group-heading h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.02rem; }
+    .cost-group-heading span { flex: 0 0 auto; color: var(--muted); font-size: .75rem; }
+    .hotel-block { padding: 14px 0 4px; }
+    .hotel-block + .hotel-block { border-top: 1px solid var(--line); }
+    .hotel-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .hotel-title h4 { margin: 0; font-size: .94rem; line-height: 1.35; text-wrap: balance; }
+    .hotel-title span { flex: 0 0 auto; color: var(--accent); font-size: .75rem; font-weight: 750; }
+    .table-wrap { overflow-x: auto; }
+    .cost-table { width: 100%; border-collapse: collapse; font-size: .82rem; font-variant-numeric: tabular-nums; }
+    .cost-table th, .cost-table td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    .cost-table th { color: var(--muted); font-size: .74rem; font-weight: 700; }
+    .cost-table th:first-child, .cost-table td:first-child { padding-left: 0; text-align: left; }
+    .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
+    .cost-table tbody tr:last-child td { border-bottom: 0; }
+    .currency-note { display: flex; align-items: flex-start; gap: 8px; margin-top: 13px; padding: 11px 12px; border-radius: 10px; color: oklch(.34 .055 47); background: oklch(.94 .028 63); font-size: .78rem; }
+    .currency-note .icon { width: 16px; height: 16px; margin-top: 2px; }
+    .section-back { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 12px; padding: 6px 0; border: 0; color: var(--accent); background: transparent; font-size: .82rem; font-weight: 750; cursor: pointer; }
+    .section-back .icon { width: 16px; height: 16px; }
+    .more-intro { margin: -4px 0 12px; color: var(--muted); font-size: .84rem; }
+    .more-list { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+    .more-action { width: 100%; display: grid; grid-template-columns: 38px minmax(0, 1fr) 18px; align-items: center; gap: 10px; padding: 15px 2px; border: 0; border-bottom: 1px solid var(--line); color: var(--ink); background: transparent; text-align: left; cursor: pointer; }
+    .more-action > .icon:first-child { width: 22px; height: 22px; color: var(--accent); }
+    .more-action > .icon:last-child { width: 16px; height: 16px; color: var(--muted); }
+    .more-action > span { min-width: 0; }
+    .more-action strong { display: block; color: var(--ink); font-size: .91rem; }
+    .more-action > span > span { display: block; margin-top: 2px; color: var(--muted); font-size: .78rem; }
+
     .bottom-nav {
       position: fixed;
       z-index: 30;
@@ -202,13 +242,13 @@
       height: calc(var(--nav-height) + var(--safe-bottom));
       transform: translateX(-50%);
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       padding: 7px 10px calc(7px + var(--safe-bottom));
       border-top: 1px solid var(--line);
       background: oklch(1 0 0 / .96);
       backdrop-filter: blur(12px);
     }
-    .bottom-action { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font-size: .72rem; font-weight: 700; cursor: pointer; }
+    .bottom-action { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font-size: .72rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
     .bottom-action .icon { width: 21px; height: 21px; }
     .bottom-action.active { color: var(--primary-dark); background: oklch(.94 .035 48); }
     .toast { position: fixed; z-index: 40; left: 50%; bottom: calc(80px + var(--safe-bottom)); transform: translate(-50%, 12px); padding: 9px 14px; border-radius: 9px; color: white; background: oklch(.22 .02 42); font-size: .82rem; opacity: 0; pointer-events: none; transition: .18s ease-out; }
@@ -218,7 +258,7 @@
       body { background: oklch(.95 .008 225); }
       .shell { min-height: 100vh; background: white; box-shadow: 0 0 8px oklch(.2 0 0 / .08); }
       .hero { padding-left: 28px; padding-right: 28px; }
-      .essentials, main, .info-section, .prep-section, .map-section { padding-left: 22px; padding-right: 22px; }
+      .essentials, main, .info-section, .prep-section, .map-section, .cost-section, .more-section { padding-left: 22px; padding-right: 22px; }
       .day-nav { padding-left: 22px; padding-right: 22px; }
     }
     @media print {
@@ -226,7 +266,8 @@
       .shell { width: 100%; max-width: none; padding: 0; }
       .hero { color: var(--ink); background: white; border-bottom: 2px solid var(--ink); }
       .hero p { color: var(--muted); }
-      .hero-status, .sun-mark, .day-nav-wrap, .bottom-nav, .actions, .toast, .panel { display: none !important; }
+      .hero-status, .sun-mark, .day-nav-wrap, .bottom-nav, .actions, .toast, .panel, .section-back { display: none !important; }
+      .cost-section { display: block !important; break-before: page; }
       .day { display: block !important; break-before: page; animation: none; }
       .day:first-of-type { break-before: auto; }
       .stop-card { break-inside: avoid; }
@@ -250,7 +291,7 @@
       </div>
       <div class="hero-status">
         <span class="status-chip">6 晚</span>
-        <span class="status-chip">5 天租車</span>
+        <span class="status-chip">6 天租車</span>
         <span class="status-chip">日本時間 +1 小時</span>
       </div>
     </header>
@@ -293,6 +334,7 @@
           <article class="stop transport"><div class="time">10:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>搭 OTS 免費接駁</h3><span class="duration">約 20 分</span></div><p>道路狀況可能影響車程；找不到乘車處時直接致電營業所。</p></div></article>
           <article class="stop"><div class="time">11:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>OTS 臨空豐崎取車</h3><span class="duration">45–60 分</span></div><p>確認 ETC 卡、保險、車身刮痕、油種與還車規則。地址：豊見城市豊崎3-37。</p><div class="tags"><span class="tag">預約時間固定</span><span class="tag green">08:00–19:00</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=OTS+Rent-a-car+Rinku+Toyosaki" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="tel:+81988568877"><svg class="icon"><use href="#phone"/></svg>098-856-8877</a></div></div></article>
           <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>午餐・採買・前往住宿</h3><span class="duration">彈性</span></div><p>推薦先在附近 iias 沖繩豐崎用餐，補飲水與車用品，再前往住宿。若精神好，可散步豐崎美 SUN 海灘。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=iias+Okinawa+Toyosaki" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>iias 豐崎</a><a class="action" href="https://maps.google.com/?q=Toyosaki+Chura+Sun+Beach" target="_blank" rel="noopener">美 SUN 海灘</a></div></div></article>
+          <article class="stop lodging"><div class="time">傍晚</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>入住 Hotel Yugaf Inn Okinawa</h3><span class="duration">第 1／3 晚</span></div><p>10/6–10/9 連住 3 晚；抵達後先確認停車位置、早餐與退房時間。</p><div class="tags"><span class="tag green">4 人房＋1 人房</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Hotel+Yugaf+Inn+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>飯店導航</a></div></div></article>
         </div>
         <details><summary>今天的提醒</summary><div class="day-tip">台灣駕照不可直接使用；請攜帶台灣駕照正本與日文譯本。日本靠左行駛，右轉時特別注意不要誤入對向車道。</div></details>
       </section>
@@ -300,12 +342,12 @@
       <section class="day" id="d1" data-date="2026-10-07">
         <div class="day-heading"><div><h2>名護・古宇利島</h2><p>地圖 Day 1｜北部景觀日</p></div><span class="route-distance">長程駕駛</span></div>
         <div class="timeline">
-          <article class="stop transport"><div class="time">08:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>住宿出發 → 名護</h3><span class="duration">約 90 分</span></div><p>走沖繩自動車道；可在伊芸 SA 短暫休息。</p></div></article>
+          <article class="stop transport"><div class="time">08:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Hotel Yugaf 出發 → 名護</h3><span class="duration">短程</span></div><p>今晚續住 Hotel Yugaf Inn Okinawa；出門前確認房卡與車位。</p></div></article>
           <article class="stop"><div class="time">10:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護自然動植物公園</h3><span class="duration">2 小時</span></div><p>地圖景點 1A。建議對照訂票名稱確認是否指 Neo Park Okinawa；園區大，穿好走的鞋。</p><div class="tags"><span class="tag">地圖 1A</span><span class="tag blue">名稱請確認</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Neo+Park+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.neopark.co.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
           <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護午餐</h3><span class="duration">60 分</span></div><p>避免趕路，午餐放在名護市區；用餐後再前往古宇利島。</p></div></article>
           <article class="stop transport"><div class="time">13:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護 → 古宇利島</h3><span class="duration">約 35 分</span></div><p>過古宇利大橋前後都有拍照點；勿臨停於橋面。</p></div></article>
           <article class="stop"><div class="time">14:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>古宇利島・海灘</h3><span class="duration">90 分</span></div><p>地圖景點 1B。先逛古宇利海灘，再依天候決定是否上古宇利海洋塔。</p><div class="tags"><span class="tag">地圖 1B</span><span class="tag green">塔 10:00–18:00</span><span class="tag">最晚入園 17:30</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Kouri+Beach" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>古宇利海灘</a><a class="action" href="https://maps.google.com/?q=Kouri+Ocean+Tower" target="_blank" rel="noopener">海洋塔</a><a class="action" href="https://www.kouri-oceantower.com/facility.html" target="_blank" rel="noopener">官方資訊</a></div></div></article>
-          <article class="stop transport"><div class="time">17:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回住宿</h3><span class="duration">約 100 分</span></div><p>北部傍晚易疲勞；不要把晚餐訂得太早。</p></div></article>
+          <article class="stop lodging"><div class="time">17:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回 Hotel Yugaf Inn Okinawa</h3><span class="duration">第 2／3 晚</span></div><p>北部傍晚易疲勞；不要把晚餐訂得太早。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Hotel+Yugaf+Inn+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>返回飯店</a></div></div></article>
         </div>
         <details><summary>雨天調整</summary><div class="day-tip">古宇利島遇大雨可縮短，改逛名護鳳梨園或 AEON 名護店；強風時海洋塔屋頂可能關閉。</div></details>
       </section>
@@ -313,12 +355,12 @@
       <section class="day" id="d2" data-date="2026-10-08">
         <div class="day-heading"><div><h2>美麗海・翡翠海灘</h2><p>地圖 Day 2｜早到避開人潮</p></div><span class="route-distance">北部一日</span></div>
         <div class="timeline">
-          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>住宿出發 → 海洋博公園</h3><span class="duration">約 2 小時</span></div><p>目標停 P7 北門立體停車場；園內步行距離長。</p></div></article>
+          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Hotel Yugaf 出發 → 海洋博公園</h3><span class="duration">約 40 分</span></div><p>目標停 P7 北門立體停車場；園內步行距離長。</p></div></article>
           <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩美麗海水族館</h3><span class="duration">3–3.5 小時</span></div><p>地圖景點 2A。先看黑潮之海，再依當日表演時間調整海豚劇場。</p><div class="tags"><span class="tag">地圖 2A</span><span class="tag green">08:30–18:30</span><span class="tag">最晚入館 17:30</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+Churaumi+Aquarium" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://churaumi.okinawa/guide/hour/" target="_blank" rel="noopener">營業資訊</a></div></div></article>
           <article class="stop"><div class="time">12:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>園區午餐</h3><span class="duration">60 分</span></div><p>館內餐廳尖峰可能排隊；也可準備簡單食物在園區休息區用餐。</p></div></article>
           <article class="stop"><div class="time">13:45</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>翡翠海灘</h3><span class="duration">90 分</span></div><p>地圖景點 2B。10 月屬海洋博公園通常期，設施時間較夏季短；依浪況與救生公告決定是否下水。</p><div class="tags"><span class="tag">地圖 2B</span><span class="tag blue">看當日海況</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Emerald+Beach+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
           <article class="stop"><div class="time">15:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>備瀨福木林道（選配）</h3><span class="duration">45 分</span></div><p>若體力足夠再去；下雨或孩子累了就直接返程。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Bise+Fukugi+Tree+Road" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
-          <article class="stop transport"><div class="time">16:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回住宿</h3><span class="duration">約 2 小時</span></div><p>回程可視疲勞在許田休息站停留。</p></div></article>
+          <article class="stop lodging"><div class="time">16:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回 Hotel Yugaf Inn Okinawa</h3><span class="duration">第 3／3 晚</span></div><p>約 40 分鐘車程；今晚整理行李，明早退房並移動至中部。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Hotel+Yugaf+Inn+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>返回飯店</a></div></div></article>
         </div>
         <details><summary>今天的提醒</summary><div class="day-tip">水族館官方目前公告 2027/3/31 前無計畫休館（颱風等臨時狀況除外）。海灘設施則依海洋博公園通常期時間運作。</div></details>
       </section>
@@ -326,12 +368,13 @@
       <section class="day" id="d3" data-date="2026-10-09">
         <div class="day-heading"><div><h2>親子樂園・植物園</h2><p>地圖 Day 3｜中部順路走</p></div><span class="route-distance">中部短程</span></div>
         <div class="timeline">
+          <article class="stop lodging"><div class="time">08:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Hotel Yugaf 退房 → 中部</h3><span class="duration">約 70 分</span></div><p>確認房內與停車位沒有遺留物品，再前往沖繩兒童王國。</p></div></article>
           <article class="stop"><div class="time">09:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩兒童王國</h3><span class="duration">3 小時</span></div><p>地圖景點 3A。動物園與兒童設施範圍大，先挑必看區域，不必硬走完。</p><div class="tags"><span class="tag">地圖 3A</span><span class="tag blue">週二通常休園</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+Zoo+and+Museum" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.okzm.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
           <article class="stop transport"><div class="time">12:35</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>兒童王國 → AEON Mall Rycom</h3><span class="duration">約 10 分</span></div><p>距離近，適合午餐與室內休息。</p></div></article>
           <article class="stop"><div class="time">12:50</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>永旺夢樂城沖繩來客夢</h3><span class="duration">2 小時</span></div><p>地圖景點 3B。先用餐再採買；大型商場容易超時，設定 15:00 離開。</p><div class="tags"><span class="tag">地圖 3B</span><span class="tag green">餐飲選擇多</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=AEON+MALL+Okinawa+Rycom" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
           <article class="stop transport"><div class="time">15:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Rycom → 東南植物樂園</h3><span class="duration">約 20 分</span></div><p>下午仍可能炎熱，先補水再入園。</p></div></article>
           <article class="stop"><div class="time">15:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>東南植物樂園</h3><span class="duration">2–2.5 小時</span></div><p>地圖景點 3C。官方時段會隨季節活動變更；2026 年 10 月活動尚需出發前確認。</p><div class="tags"><span class="tag">地圖 3C</span><span class="tag blue">時段浮動</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Southeast+Botanical+Gardens+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.southeast-botanical.jp/information/" target="_blank" rel="noopener">營業資訊</a></div></div></article>
-          <article class="stop transport"><div class="time">18:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>晚餐・返回住宿</h3><span class="duration">彈性</span></div><p>若 10 月燈飾尚未開始，不建議為了等天黑滯留。</p></div></article>
+          <article class="stop lodging"><div class="time">18:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>入住 Okinawa Grand Mer Resort</h3><span class="duration">1 晚</span></div><p>若 10 月燈飾尚未開始，不建議為了等天黑滯留；晚餐後前往飯店辦理入住。</p><div class="tags"><span class="tag green">4 人房＋1 人房</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+Grand+Mer+Resort" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>飯店導航</a></div></div></article>
         </div>
         <details><summary>時間不夠怎麼刪</summary><div class="day-tip">優先保留兒童王國與東南植物樂園；Rycom 壓縮為午餐 60–90 分鐘即可。若下雨則反過來，把 Rycom 留久一點。</div></details>
       </section>
@@ -339,12 +382,14 @@
       <section class="day" id="d4" data-date="2026-10-10">
         <div class="day-heading"><div><h2>玉泉洞・美國村</h2><p>地圖 Day 4｜南部到中部</p></div><span class="route-distance">一路向北</span></div>
         <div class="timeline">
+          <article class="stop lodging"><div class="time">08:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Grand Mer 退房 → 沖繩世界</h3><span class="duration">約 50 分</span></div><p>行李全數上車後往南移動；貴重物品不要留在可見位置。</p></div></article>
           <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩世界文化王國・玉泉洞</h3><span class="duration">3 小時</span></div><p>地圖景點 4A。洞內濕滑且有階梯；先走玉泉洞，再看表演與文化村。</p><div class="tags"><span class="tag">地圖 4A</span><span class="tag blue">洞內約 21°C</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+World" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.gyokusendo.co.jp/okinawaworld/" target="_blank" rel="noopener">官方網站</a></div></div></article>
           <article class="stop"><div class="time">12:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>午餐</h3><span class="duration">60 分</span></div><p>可在園內或往北途中用餐，避免餓著開長程。</p></div></article>
           <article class="stop transport"><div class="time">13:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩世界 → 安良波海灘</h3><span class="duration">約 55 分</span></div><p>週六午後可能塞車，預留 15–20 分鐘緩衝。</p></div></article>
           <article class="stop"><div class="time">14:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>安良波海灘</h3><span class="duration">75 分</span></div><p>地圖景點 4B。以散步、玩沙為主；下水依現場開放與海況公告。</p><div class="tags"><span class="tag">地圖 4B</span><span class="tag blue">看當日海況</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Araha+Beach" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
           <article class="stop transport"><div class="time">15:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>海灘 → 美國村</h3><span class="duration">約 10 分</span></div><p>停車場午後可能滿位，跟隨現場導引，不要繞同一區太久。</p></div></article>
           <article class="stop"><div class="time">16:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>美國村・晚餐・夕陽</h3><span class="duration">3–4 小時</span></div><p>地圖景點 4C。商店營業各自不同；先看海邊夕陽，再吃晚餐與逛街。</p><div class="tags"><span class="tag">地圖 4C</span><span class="tag green">夕陽時段</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Mihama+American+Village" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop lodging"><div class="time">20:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>入住 La'gent 飯店 沖繩那霸</h3><span class="duration">第 1／2 晚</span></div><p>從美國村前往那霸約 40–50 分鐘；抵達後確認隔日早餐與停車規則。</p><div class="tags"><span class="tag green">4 人房＋1 人房</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=La%27gent+Hotel+Okinawa+Naha" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>飯店導航</a></div></div></article>
         </div>
         <details><summary>今天的提醒</summary><div class="day-tip">玉泉洞不適合推嬰兒車，全程走完再回到地面。若同行者行動不便，先查無障礙替代動線。</div></details>
       </section>
@@ -352,6 +397,7 @@
       <section class="day" id="d5" data-date="2026-10-11">
         <div class="day-heading"><div><h2>水族館・購物・還車</h2><p>地圖 Day 5｜17:00 前還車</p></div><span class="route-distance">時間固定</span></div>
         <div class="timeline">
+          <article class="stop transport"><div class="time">08:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 飯店 → 豐崎</h3><span class="duration">約 25 分</span></div><p>今晚續住同一間飯店；只帶當日用品，行李留在房內。</p></div></article>
           <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>DMM Kariyushi 水族館</h3><span class="duration">2–2.5 小時</span></div><p>地圖景點 5A。就在 iias 沖繩豐崎內，開館即入場最省時間。</p><div class="tags"><span class="tag">地圖 5A</span><span class="tag green">通常 09:00–19:00</span><span class="tag">最晚入館前 60 分</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=DMM+Kariyushi+Aquarium" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://kariyushi-aquarium.com/opening-hours/" target="_blank" rel="noopener">當日營業</a></div></div></article>
           <article class="stop transport"><div class="time">11:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>豐崎 → PARCO CITY</h3><span class="duration">約 35 分</span></div><p>週日市區交通較慢，保守抓 45 分鐘。</p></div></article>
           <article class="stop"><div class="time">12:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>San-A 浦添西海岸 PARCO CITY</h3><span class="duration">2 小時</span></div><p>地圖景點 5B。午餐＋最後採買；14:30 必須離開，避免壓縮還車。</p><div class="tags"><span class="tag">地圖 5B</span><span class="tag blue">設 14:20 鬧鐘</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=San-A+Urasoe+West+Coast+PARCO+CITY" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
@@ -359,6 +405,7 @@
           <article class="stop"><div class="time">16:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>OTS DFS 營業所還車</h3><span class="duration">17:00 前</span></div><p>位於 T Galleria 沖繩／歌町站旁。取回所有行李、ETC 卡與個人物品。</p><div class="tags"><span class="tag">預約時間固定</span><span class="tag blue">保留加油收據</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=OTS+Rent-a-car+DFS+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.otsinternational.jp/otsrentacar/okinawa/office/dfs/" target="_blank" rel="noopener">營業所資訊</a></div></div></article>
           <article class="stop transport"><div class="time">17:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>歌町站 → 國際通</h3><span class="duration">單軌約 10 分</span></div><p>搭 Yui Rail 至牧志站或縣廳前站。</p></div></article>
           <article class="stop"><div class="time">17:45</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>國際通・晚餐</h3><span class="duration">2–3 小時</span></div><p>地圖景點 5C。最後一晚只買方便帶上飛機的物品，避免行李超重。</p><div class="tags"><span class="tag">地圖 5C</span><span class="tag green">不需開車</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Kokusai-dori+Naha" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>開啟地圖</a></div></div></article>
+          <article class="stop lodging"><div class="time">晚上</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回 La'gent 飯店 沖繩那霸</h3><span class="duration">第 2／2 晚</span></div><p>搭單軌或步行返回飯店；睡前完成行李與液體分裝。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=La%27gent+Hotel+Okinawa+Naha" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>返回飯店</a></div></div></article>
         </div>
         <details open><summary>還車日不可妥協的緩衝</summary><div class="day-tip">PARCO CITY 最晚 14:30 離開。若 15:30 仍未接近 DFS，直接取消加碼行程；還車逾時風險高於少逛一間店。</div></details>
       </section>
@@ -366,8 +413,8 @@
       <section class="day" id="d6" data-date="2026-10-12">
         <div class="day-heading"><div><h2>返台</h2><p>國際線提早抵達機場</p></div><span class="route-distance">無租車</span></div>
         <div class="timeline">
-          <article class="stop"><div class="time">06:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>起床・退房前檢查</h3><span class="duration">30 分</span></div><p>護照、手機、錢包、充電器、退稅商品、托運液體。早餐以可外帶為主。</p></div></article>
-          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>前往那霸機場</h3><span class="duration">依住宿調整</span></div><p>若住國際通附近，可搭單軌或預約計程車；尖峰時段不要壓線。</p></div></article>
+          <article class="stop lodging"><div class="time">06:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 退房前檢查</h3><span class="duration">30 分</span></div><p>護照、手機、錢包、充電器、退稅商品、托運液體。早餐以可外帶為主。</p></div></article>
+          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 飯店 → 那霸機場</h3><span class="duration">依交通方式</span></div><p>可搭單軌或預約計程車；尖峰時段不要壓線。</p></div></article>
           <article class="stop"><div class="time">07:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>抵達那霸機場</h3><span class="duration">起飛前 2.5 小時</span></div><p>辦理報到、托運與安檢。依虎航最新通知與登機證上的櫃台／登機門為準。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Naha+Airport+International+Terminal" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>機場地圖</a></div></div></article>
           <article class="stop"><div class="time">10:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>IT231 那霸 → 桃園</h3><span class="duration">抵台 10:40</span></div><p>兩地有 1 小時時差；航班顯示時間皆為當地時間。</p><div class="tags"><span class="tag">航班固定</span><span class="tag blue">確認登機門</span></div></div></article>
         </div>
@@ -376,7 +423,18 @@
 
     </main>
 
+    <section class="more-section" id="moreView" aria-labelledby="moreTitle">
+      <h2 id="moreTitle">更多工具</h2>
+      <p class="more-intro">較少使用的資料集中放在這裡，需要時再開啟。</p>
+      <ul class="more-list">
+        <li><button class="more-action" data-more-view="cost"><svg class="icon" aria-hidden="true"><use href="#wallet"/></svg><span><strong>旅費整理</strong><span>機票、住宿與租車費用</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
+        <li><button class="more-action" data-more-view="prep"><svg class="icon" aria-hidden="true"><use href="#checklist"/></svg><span><strong>行前準備</strong><span>出發清單與旅行備忘</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
+        <li><button class="more-action" data-more-view="info"><svg class="icon" aria-hidden="true"><use href="#info"/></svg><span><strong>實用資訊</strong><span>緊急電話、道路救援與注意事項</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
+      </ul>
+    </section>
+
     <section class="prep-section" id="prepView" aria-labelledby="prepTitle">
+      <button class="section-back" data-back-view="more"><svg class="icon" aria-hidden="true"><use href="#arrow-left"/></svg>返回更多</button>
       <h2 id="prepTitle">行前準備</h2>
       <section class="panel" aria-labelledby="checkTitle">
         <h2 id="checkTitle">出發前清單</h2>
@@ -406,7 +464,102 @@
       <div class="map-hint"><svg class="icon" aria-hidden="true"><use href="#zoom"/></svg>點擊地圖可開啟完整尺寸</div>
     </section>
 
+    <section class="cost-section" id="costView" aria-labelledby="costTitle">
+      <button class="section-back" data-back-view="more"><svg class="icon" aria-hidden="true"><use href="#arrow-left"/></svg>返回更多</button>
+      <h2 id="costTitle">旅費整理</h2>
+      <p class="cost-intro">5 人同行的預估費用；台幣與日幣分開顯示，避免匯率換算造成誤差。</p>
+
+      <div class="cost-summary" aria-label="費用摘要">
+        <div class="cost-total">
+          <span>台幣已知費用</span>
+          <strong>NT$93,974</strong>
+          <small>機票＋住宿估算</small>
+        </div>
+        <div class="cost-total">
+          <span>日幣現金</span>
+          <strong>¥67,210</strong>
+          <small>6 天租車費</small>
+        </div>
+      </div>
+
+      <section class="cost-group" aria-labelledby="flightCostTitle">
+        <div class="cost-group-heading">
+          <h3 id="flightCostTitle"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>機票</h3>
+          <span>新台幣</span>
+        </div>
+        <div class="table-wrap">
+          <table class="cost-table">
+            <thead><tr><th scope="col">項目</th><th scope="col">總額</th><th scope="col">人數</th><th scope="col">每人費用</th></tr></thead>
+            <tbody><tr><td>機票</td><td>NT$55,612</td><td>5 人</td><td>NT$11,122</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="cost-group" aria-labelledby="hotelCostTitle">
+        <div class="cost-group-heading">
+          <h3 id="hotelCostTitle"><svg class="icon" aria-hidden="true"><use href="#hotel"/></svg>住宿</h3>
+          <span>新台幣</span>
+        </div>
+
+        <div class="hotel-block">
+          <div class="hotel-title"><h4>Hotel Yugaf Inn Okinawa</h4><span>3 晚</span></div>
+          <div class="table-wrap">
+            <table class="cost-table">
+              <thead><tr><th scope="col">房型</th><th scope="col">總價</th><th scope="col">晚數</th><th scope="col">每晚費用</th></tr></thead>
+              <tbody>
+                <tr><td>4 人房</td><td>NT$9,875</td><td>3 晚</td><td>NT$3,292</td></tr>
+                <tr><td>1 人房</td><td>NT$5,674</td><td>3 晚</td><td>NT$1,891</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="hotel-block">
+          <div class="hotel-title"><h4>Okinawa Grand Mer Resort</h4><span>每晚價格</span></div>
+          <div class="table-wrap">
+            <table class="cost-table">
+              <thead><tr><th scope="col">房型</th><th scope="col">每晚費用</th></tr></thead>
+              <tbody>
+                <tr><td>4 人房</td><td>NT$3,216</td></tr>
+                <tr><td>1 人房</td><td>NT$1,839</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="hotel-block">
+          <div class="hotel-title"><h4>La'gent 飯店 沖繩那霸</h4><span>2 晚</span></div>
+          <div class="table-wrap">
+            <table class="cost-table">
+              <thead><tr><th scope="col">房型</th><th scope="col">總價</th><th scope="col">晚數</th><th scope="col">每晚費用</th></tr></thead>
+              <tbody>
+                <tr><td>4 人房</td><td>NT$11,530</td><td>2 晚</td><td>NT$5,765</td></tr>
+                <tr><td>1 人房</td><td>NT$6,228</td><td>2 晚</td><td>NT$3,114</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="currency-note"><svg class="icon" aria-hidden="true"><use href="#info"/></svg><span>住宿合計 NT$38,362，依 6 晚行程推估 Okinawa Grand Mer Resort 住宿 1 晚。</span></div>
+      </section>
+
+      <section class="cost-group" aria-labelledby="carCostTitle">
+        <div class="cost-group-heading">
+          <h3 id="carCostTitle"><svg class="icon" aria-hidden="true"><use href="#car"/></svg>租車</h3>
+          <span>日幣・付現</span>
+        </div>
+        <div class="table-wrap">
+          <table class="cost-table">
+            <thead><tr><th scope="col">項目</th><th scope="col">天數</th><th scope="col">總費用</th><th scope="col">付款方式</th></tr></thead>
+            <tbody><tr><td>租車</td><td>6 天</td><td>¥67,210</td><td>現金</td></tr></tbody>
+          </table>
+        </div>
+        <div class="currency-note"><svg class="icon" aria-hidden="true"><use href="#info"/></svg><span>租車費為日幣，未納入上方台幣合計；實際支出請以付款當日匯率為準。</span></div>
+      </section>
+    </section>
+
     <section class="info-section" id="infoView">
+      <button class="section-back" data-back-view="more"><svg class="icon" aria-hidden="true"><use href="#arrow-left"/></svg>返回更多</button>
       <h2>實用資訊</h2>
       <ul class="info-list">
         <li><strong>緊急電話</strong><span>警察 110｜消防／救護車 119｜海上事故 118</span></li>
@@ -423,10 +576,8 @@
 
     <nav class="bottom-nav" aria-label="主要功能">
       <button class="bottom-action active" data-view="schedule"><svg class="icon" aria-hidden="true"><use href="#calendar"/></svg>每日行程</button>
-      <button class="bottom-action" data-view="today"><svg class="icon" aria-hidden="true"><use href="#target"/></svg>旅行今日</button>
       <button class="bottom-action" data-view="map"><svg class="icon" aria-hidden="true"><use href="#map"/></svg>全覽地圖</button>
-      <button class="bottom-action" data-view="prep"><svg class="icon" aria-hidden="true"><use href="#checklist"/></svg>行前準備</button>
-      <button class="bottom-action" data-view="info"><svg class="icon" aria-hidden="true"><use href="#info"/></svg>實用資訊</button>
+      <button class="bottom-action" data-view="more"><svg class="icon" aria-hidden="true"><use href="#more"/></svg>更多</button>
     </nav>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
@@ -434,6 +585,11 @@
   <svg aria-hidden="true" width="0" height="0" style="position:absolute">
     <symbol id="plane" viewBox="0 0 24 24"><path d="M22 2 9.7 14.3M22 2l-7.8 20-4.5-7.7L2 9.8 22 2Z"/></symbol>
     <symbol id="car" viewBox="0 0 24 24"><path d="M5 17h14M6 17v2M18 17v2M4 13l2-6h12l2 6v4H4v-4Z"/><path d="M7 13h.01M17 13h.01"/></symbol>
+    <symbol id="hotel" viewBox="0 0 24 24"><path d="M3 21V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v16M3 17h18M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></symbol>
+    <symbol id="wallet" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a1 1 0 0 1 1 1v3M3 6v13a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2Z"/><path d="M16 13h2"/></symbol>
+    <symbol id="more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="arrow-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6M9 12h11"/></symbol>
     <symbol id="map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></symbol>
     <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
     <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
@@ -453,7 +609,9 @@
       const scheduleView = document.getElementById('scheduleView');
       const prepView = document.getElementById('prepView');
       const mapView = document.getElementById('mapView');
+      const costView = document.getElementById('costView');
       const infoView = document.getElementById('infoView');
+      const moreView = document.getElementById('moreView');
       const dayNavWrap = document.getElementById('dayNavWrap');
       const toast = document.getElementById('toast');
       let toastTimer;
@@ -483,29 +641,29 @@
         const isInfo = view === 'info';
         const isPrep = view === 'prep';
         const isMap = view === 'map';
-        const isSchedule = !isInfo && !isPrep && !isMap;
+        const isCost = view === 'cost';
+        const isMore = view === 'more';
+        const isSchedule = view === 'schedule';
         scheduleView.style.display = isSchedule ? 'block' : 'none';
         prepView.classList.toggle('active', isPrep);
         mapView.classList.toggle('active', isMap);
+        costView.classList.toggle('active', isCost);
         infoView.classList.toggle('active', isInfo);
+        moreView.classList.toggle('active', isMore);
         dayNavWrap.style.display = isSchedule ? 'block' : 'none';
-        bottomActions.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+        const activeNav = isSchedule ? 'schedule' : isMap ? 'map' : 'more';
+        bottomActions.forEach(btn => {
+          const active = btn.dataset.view === activeNav;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-current', active ? 'page' : 'false');
+        });
         if (!isSchedule) window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       tabs.forEach(tab => tab.addEventListener('click', () => { setView('schedule'); showDay(tab.dataset.day, true); }));
-      bottomActions.forEach(btn => btn.addEventListener('click', () => {
-        if (btn.dataset.view === 'info') return setView('info');
-        if (btn.dataset.view === 'prep') return setView('prep');
-        if (btn.dataset.view === 'map') return setView('map');
-        setView('schedule');
-        if (btn.dataset.view === 'today') {
-          const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-          const match = days.find(day => day.dataset.date === today);
-          if (match) { showDay(match.id, true); showToast('已切換到旅行今日'); }
-          else { showToast('目前不在旅行日期內'); }
-        }
-      }));
+      bottomActions.forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
+      document.querySelectorAll('[data-more-view]').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.moreView)));
+      document.querySelectorAll('[data-back-view]').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.backView)));
 
       document.querySelectorAll('[data-check]').forEach(box => {
         const key = 'okinawa-check-' + box.dataset.check;
@@ -536,6 +694,7 @@
       const saved = localStorage.getItem('okinawa-active-day');
       const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
       const todayMatch = days.find(day => day.dataset.date === today);
+      setView('schedule');
       showDay(todayMatch?.id || (days.some(d => d.id === saved) ? saved : 'd0'), false);
     })();
   </script>

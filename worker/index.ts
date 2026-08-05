@@ -18,8 +18,15 @@ interface ExecutionContext {
 }
 
 const worker = {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env | undefined, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    // index.html remains the canonical application. Sites only provides the
+    // deployment runtime, so serve the static document directly at the root.
+    if (url.pathname === "/" && env?.ASSETS) {
+      return env.ASSETS.fetch(new Request(new URL("/index.html", request.url)));
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
@@ -30,7 +37,7 @@ const worker = {
         },
       }, allowedWidths);
     }
-    return handler.fetch(request, env, ctx);
+    return handler.fetch(request, env as Env, ctx);
   },
 };
 

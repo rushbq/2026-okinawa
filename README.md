@@ -13,11 +13,33 @@
 可直接用瀏覽器開啟 `index.html`。若要模擬正式網站環境：
 
 ```bash
-cd /Users/clyde/dev/playground/2026沖繩
 python3 -m http.server 8080
 ```
 
 接著瀏覽 `http://localhost:8080`。
+
+## 部署架構
+
+`index.html` 仍是唯一的網站內容來源，不需要 React 或編譯才能開啟。部署相關檔案只負責讓 OpenAI Sites 接受並執行這個靜態網站：
+
+- `prepare:static` 在建置前將 `index.html` 與 `assets/` 複製到暫存的 `public/`。
+- `worker/index.ts` 直接在網站根網址提供靜態 `index.html`，不經過頁面重新實作。
+- `app/`、`vite.config.ts` 與 `.openai/hosting.json` 是 Sites 的部署轉接層，不承載行程內容。
+- `public/index.html`、`public/assets/` 與 `dist/` 都是可重新產生的建置輸出，不納入版本控制。
+
+部署前驗證：
+
+```bash
+npm ci
+npm run verify:static
+npm run build
+```
+
+本機檢查正式建置：
+
+```bash
+npm run start
+```
 
 ## 使用限制
 

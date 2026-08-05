@@ -88,16 +88,6 @@
     .essential small { display: block; margin-top: 3px; color: var(--muted); font-size: .79rem; }
     .icon { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 
-    .notice {
-      margin: 12px 14px 0;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: oklch(.94 .048 82);
-      color: oklch(.31 .06 66);
-      font-size: .85rem;
-    }
-    .notice strong { color: oklch(.27 .075 58); }
-
     .day-nav-wrap {
       position: sticky;
       top: 0;
@@ -127,7 +117,7 @@
     .day-tab.active { color: white; background: var(--primary-dark); }
 
     main { padding: 4px 14px 0; }
-    .day { display: none; padding-top: 16px; animation: enter .18s cubic-bezier(.22, 1, .36, 1); }
+    .day { display: none; padding-top: 16px; scroll-margin-top: 78px; animation: enter .18s cubic-bezier(.22, 1, .36, 1); }
     .day.active { display: block; }
     @keyframes enter { from { opacity: .55; transform: translateY(4px); } to { opacity: 1; transform: none; } }
     .day-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 0 2px 15px; }
@@ -188,9 +178,10 @@
     textarea { width: 100%; min-height: 120px; resize: vertical; padding: 12px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; line-height: 1.55; }
     .save-state { margin-top: 6px; color: var(--muted); font-size: .75rem; }
 
-    .info-section { display: none; padding: 22px 14px 0; }
-    .info-section.active { display: block; }
-    .info-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+    .info-section, .prep-section { display: none; padding: 22px 14px 0; }
+    .info-section.active, .prep-section.active { display: block; }
+    .info-section h2, .prep-section > h2 { margin: 0 0 12px; font-size: 1.28rem; }
+    .prep-section .panel { margin-top: 12px; }
     .info-list { margin: 0; padding: 0; list-style: none; }
     .info-list li { padding: 13px 0; border-bottom: 1px solid var(--line); }
     .info-list strong { display: block; font-size: .91rem; }
@@ -207,7 +198,7 @@
       height: calc(var(--nav-height) + var(--safe-bottom));
       transform: translateX(-50%);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       padding: 7px 10px calc(7px + var(--safe-bottom));
       border-top: 1px solid var(--line);
       background: oklch(1 0 0 / .96);
@@ -223,7 +214,7 @@
       body { background: oklch(.95 .008 225); }
       .shell { min-height: 100vh; background: white; box-shadow: 0 0 8px oklch(.2 0 0 / .08); }
       .hero { padding-left: 28px; padding-right: 28px; }
-      .essentials, main, .info-section { padding-left: 22px; padding-right: 22px; }
+      .essentials, main, .info-section, .prep-section { padding-left: 22px; padding-right: 22px; }
       .day-nav { padding-left: 22px; padding-right: 22px; }
     }
     @media print {
@@ -277,8 +268,6 @@
         <small>機場至臨空豐崎有免費接駁；還車前預留加油與市區塞車時間</small>
       </article>
     </section>
-
-    <div class="notice"><strong>行程假設：</strong>年份為 2026、住宿以那霸／中南部為基準。車程為一般路況估算；10 月營業公告與活動時段請於出發前 7 天再確認。</div>
 
     <div class="day-nav-wrap" id="dayNavWrap">
       <nav class="day-nav" aria-label="選擇日期" id="dayNav">
@@ -381,6 +370,10 @@
         <details><summary>今天的提醒</summary><div class="day-tip">廉航報到與行李規定可能調整，請在出發前一天查看台灣虎航 App／Email，不以本頁時間取代航空公司通知。</div></details>
       </section>
 
+    </main>
+
+    <section class="prep-section" id="prepView" aria-labelledby="prepTitle">
+      <h2 id="prepTitle">行前準備</h2>
       <section class="panel" aria-labelledby="checkTitle">
         <h2 id="checkTitle">出發前清單</h2>
         <div class="check-grid">
@@ -398,7 +391,7 @@
         <textarea id="notes" placeholder="可記住宿地址、停車位置、預約編號、想吃的餐廳……" aria-label="旅行備忘"></textarea>
         <div class="save-state" id="saveState">內容只會儲存在這台裝置的瀏覽器</div>
       </section>
-    </main>
+    </section>
 
     <section class="info-section" id="infoView">
       <h2>實用資訊</h2>
@@ -418,6 +411,7 @@
     <nav class="bottom-nav" aria-label="主要功能">
       <button class="bottom-action active" data-view="schedule"><svg class="icon" aria-hidden="true"><use href="#calendar"/></svg>每日行程</button>
       <button class="bottom-action" data-view="today"><svg class="icon" aria-hidden="true"><use href="#target"/></svg>旅行今日</button>
+      <button class="bottom-action" data-view="prep"><svg class="icon" aria-hidden="true"><use href="#checklist"/></svg>行前準備</button>
       <button class="bottom-action" data-view="info"><svg class="icon" aria-hidden="true"><use href="#info"/></svg>實用資訊</button>
     </nav>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -430,6 +424,7 @@
     <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
     <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
     <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+    <symbol id="checklist" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8M14 9h3M8 15l1.5 1.5L12 14M14 15h3"/></symbol>
     <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
     <symbol id="print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></symbol>
     <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
@@ -441,6 +436,7 @@
       const days = [...document.querySelectorAll('.day')];
       const bottomActions = [...document.querySelectorAll('.bottom-action')];
       const scheduleView = document.getElementById('scheduleView');
+      const prepView = document.getElementById('prepView');
       const infoView = document.getElementById('infoView');
       const dayNavWrap = document.getElementById('dayNavWrap');
       const toast = document.getElementById('toast');
@@ -462,26 +458,32 @@
           if (active) tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         });
         localStorage.setItem('okinawa-active-day', id);
-        if (shouldScroll) window.scrollTo({ top: dayNavWrap.offsetTop, behavior: 'smooth' });
+        if (shouldScroll) requestAnimationFrame(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       }
 
       function setView(view) {
         const isInfo = view === 'info';
-        scheduleView.style.display = isInfo ? 'none' : 'block';
+        const isPrep = view === 'prep';
+        const isSchedule = !isInfo && !isPrep;
+        scheduleView.style.display = isSchedule ? 'block' : 'none';
+        prepView.classList.toggle('active', isPrep);
         infoView.classList.toggle('active', isInfo);
-        dayNavWrap.style.display = isInfo ? 'none' : 'block';
-        bottomActions.forEach(btn => btn.classList.toggle('active', btn.dataset.view === (isInfo ? 'info' : 'schedule')));
-        if (isInfo) window.scrollTo({ top: 0, behavior: 'smooth' });
+        dayNavWrap.style.display = isSchedule ? 'block' : 'none';
+        bottomActions.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+        if (!isSchedule) window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      tabs.forEach(tab => tab.addEventListener('click', () => { setView('schedule'); showDay(tab.dataset.day, false); }));
+      tabs.forEach(tab => tab.addEventListener('click', () => { setView('schedule'); showDay(tab.dataset.day, true); }));
       bottomActions.forEach(btn => btn.addEventListener('click', () => {
         if (btn.dataset.view === 'info') return setView('info');
+        if (btn.dataset.view === 'prep') return setView('prep');
         setView('schedule');
         if (btn.dataset.view === 'today') {
           const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
           const match = days.find(day => day.dataset.date === today);
-          if (match) { showDay(match.id, false); showToast('已切換到旅行今日'); }
+          if (match) { showDay(match.id, true); showToast('已切換到旅行今日'); }
           else { showToast('目前不在旅行日期內'); }
         }
       }));

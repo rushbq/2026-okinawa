@@ -65,6 +65,7 @@
     .hero-top > div { min-width: 0; }
     .hero h1 { margin: 0; font-size: 1.9rem; line-height: 1.18; letter-spacing: -.025em; text-wrap: balance; }
     .hero p { margin: 7px 0 0; color: oklch(.92 .025 225); font-size: .94rem; }
+    .trip-dates { display: grid; gap: 1px; line-height: 1.4; }
     .sun-mark { flex: 0 0 auto; width: 48px; height: 48px; color: oklch(.86 .16 74); }
     .hero-status {
       position: relative;
@@ -77,6 +78,27 @@
     .status-chip { padding: 6px 10px; border-radius: 999px; background: oklch(1 0 0 / .13); color: white; font-size: .82rem; font-weight: 700; }
 
     .essentials { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 14px 14px 4px; }
+    .flight-details { grid-column: 1 / -1; margin: 0; border: 0; }
+    .flight-details > summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 11px 14px;
+      border-radius: 11px;
+      color: var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+      list-style: none;
+    }
+    .flight-details > summary::-webkit-details-marker { display: none; }
+    .flight-details > summary::after { content: "展開"; margin-left: auto; color: var(--accent); font-size: .76rem; font-weight: 750; }
+    .flight-details[open] > summary::after { content: "收合"; }
+    .flight-details[open] > summary { background: var(--surface-blue); }
+    .flight-summary-copy { min-width: 0; }
+    .flight-summary-copy strong { display: block; font-size: .88rem; }
+    .flight-summary-copy small { display: block; margin-top: 1px; color: var(--muted); font-size: .75rem; font-weight: 600; }
+    .flight-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
     .essential {
       min-width: 0;
       padding: 14px;
@@ -166,8 +188,8 @@
     .action.primary { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
     .action .icon { width: 15px; height: 15px; }
 
-    details { margin: 4px 0 18px 89px; border-top: 1px solid var(--line); }
-    summary { padding: 12px 0; color: var(--accent); font-size: .85rem; font-weight: 750; cursor: pointer; }
+    .day > details { margin: 4px 0 18px 89px; border-top: 1px solid var(--line); }
+    .day > details > summary { padding: 12px 0; color: var(--accent); font-size: .85rem; font-weight: 750; cursor: pointer; }
     .day-tip { padding: 0 0 4px; color: var(--muted); font-size: .84rem; }
 
     .panel { margin: 20px 0 0; padding: 16px; border-radius: var(--radius); background: var(--surface-blue); }
@@ -271,7 +293,9 @@
       .day { display: block !important; break-before: page; animation: none; }
       .day:first-of-type { break-before: auto; }
       .stop-card { break-inside: avoid; }
-      details { display: none; }
+      .day > details { display: none; }
+      .flight-details > summary { display: none; }
+      .flight-details > .flight-grid { display: grid !important; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -285,7 +309,7 @@
       <div class="hero-top">
         <div>
           <h1>沖繩 7 日自駕</h1>
-          <p>2026.10.06 週二 — 10.12 週一</p>
+          <p class="trip-dates"><span>2026 年 10 月 6 日（週二）</span><span>至 10 月 12 日（週一）</span></p>
         </div>
         <svg class="sun-mark" aria-hidden="true" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8" fill="currentColor" stroke="none"/><path d="M24 3v7M24 38v7M3 24h7M38 24h7M9.2 9.2l5 5M33.8 33.8l5 5M38.8 9.2l-5 5M14.2 33.8l-5 5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
       </div>
@@ -297,16 +321,24 @@
     </header>
 
     <section class="essentials" aria-label="交通摘要">
-      <article class="essential">
-        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>去程 IT230</div>
-        <strong>10/6　06:50 → 09:20</strong>
-        <small>桃園 → 那霸｜當地時間</small>
-      </article>
-      <article class="essential">
-        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>回程 IT231</div>
-        <strong>10/12　10:10 → 10:40</strong>
-        <small>那霸 → 桃園｜各地時間</small>
-      </article>
+      <details class="flight-details">
+        <summary>
+          <svg class="icon" aria-hidden="true"><use href="#plane"/></svg>
+          <span class="flight-summary-copy"><strong>航班資訊</strong><small>桃園 ⇄ 那霸</small></span>
+        </summary>
+        <div class="flight-grid">
+          <article class="essential">
+            <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>去程 IT230</div>
+            <strong>10/6　06:50 → 09:20</strong>
+            <small>桃園 → 那霸｜當地時間</small>
+          </article>
+          <article class="essential">
+            <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>回程 IT231</div>
+            <strong>10/12　10:10 → 10:40</strong>
+            <small>那霸 → 桃園｜各地時間</small>
+          </article>
+        </div>
+      </details>
       <article class="essential wide">
         <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#car"/></svg>OTS 租車</div>
         <strong>10/6 11:00 臨空豐崎取車　→　10/11 17:00 DFS 還車</strong>

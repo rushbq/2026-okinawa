@@ -6,6 +6,7 @@
 
 - `index.html`：手機版行程主頁，無需建置工具即可開啟。
 - `assets/original-itinerary.png`：最初提供的景點安排圖片。
+- `assets/okinawa-itinerary-map.png`：依照 1A–5C 景點重新製作的手機版全覽地圖。
 
 ## 本機開啟
 

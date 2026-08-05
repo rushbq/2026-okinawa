@@ -18,28 +18,15 @@ python3 -m http.server 8080
 
 接著瀏覽 `http://localhost:8080`。
 
-## 部署架構
+## GitHub Pages
 
-`index.html` 仍是唯一的網站內容來源，不需要 React 或編譯才能開啟。部署相關檔案只負責讓 OpenAI Sites 接受並執行這個靜態網站：
+網站直接由 `main` 分支根目錄發布，不需要安裝套件或執行建置：
 
-- `prepare:static` 在建置前將 `index.html` 與 `assets/` 複製到暫存的 `public/`。
-- `worker/index.ts` 直接在網站根網址提供靜態 `index.html`，不經過頁面重新實作。
-- `app/`、`vite.config.ts` 與 `.openai/hosting.json` 是 Sites 的部署轉接層，不承載行程內容。
-- `public/index.html`、`public/assets/` 與 `dist/` 都是可重新產生的建置輸出，不納入版本控制。
+1. 更新 `index.html` 或 `assets/`。
+2. 提交並推送至 `origin/main`。
+3. GitHub Pages 會自動更新 [公開網站](https://rushbq.github.io/2026-okinawa/)。
 
-部署前驗證：
-
-```bash
-npm ci
-npm run verify:static
-npm run build
-```
-
-本機檢查正式建置：
-
-```bash
-npm run start
-```
+`.nojekyll` 用來停用 Jekyll 處理，確保靜態檔案原樣發布。
 
 ## 使用限制
 

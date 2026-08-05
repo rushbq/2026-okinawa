@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#c45220">
+  <meta name="color-scheme" content="light">
+  <title>沖繩 7 日自駕｜2026.10.06–10.12</title>
+  <style>
+    :root {
+      --bg: oklch(1 0 0);
+      --surface: oklch(.965 .006 48);
+      --surface-blue: oklch(.96 .018 226);
+      --ink: oklch(.225 .028 42);
+      --muted: oklch(.46 .025 44);
+      --line: oklch(.89 .012 48);
+      --primary: oklch(.607 .163 47.7);
+      --primary-dark: oklch(.47 .14 47.7);
+      --accent: oklch(.39 .105 230);
+      --success: oklch(.47 .105 152);
+      --warning: oklch(.59 .13 78);
+      --danger: oklch(.5 .19 25);
+      --focus: oklch(.73 .13 230);
+      --radius: 14px;
+      --shadow: 0 3px 8px oklch(.25 .03 45 / .11);
+      --nav-height: 67px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .shell { width: min(100%, 760px); margin: 0 auto; padding-bottom: calc(92px + var(--safe-bottom)); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: calc(24px + env(safe-area-inset-top, 0px)) 20px 24px;
+      color: white;
+      background: var(--accent);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      right: -86px;
+      top: -95px;
+      border: 32px solid oklch(1 0 0 / .10);
+      border-radius: 50%;
+    }
+    .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; position: relative; z-index: 1; }
+    .hero h1 { margin: 0; font-size: 1.9rem; line-height: 1.18; letter-spacing: -.025em; text-wrap: balance; }
+    .hero p { margin: 7px 0 0; color: oklch(.92 .025 225); font-size: .94rem; }
+    .sun-mark { flex: 0 0 auto; width: 48px; height: 48px; color: oklch(.86 .16 74); }
+    .hero-status {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .status-chip { padding: 6px 10px; border-radius: 999px; background: oklch(1 0 0 / .13); color: white; font-size: .82rem; font-weight: 700; }
+
+    .essentials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 14px 4px; }
+    .essential {
+      min-width: 0;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .essential.wide { grid-column: 1 / -1; background: var(--surface-blue); }
+    .essential-label { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; color: var(--muted); font-size: .78rem; font-weight: 750; }
+    .essential strong { display: block; font-size: .98rem; line-height: 1.35; }
+    .essential small { display: block; margin-top: 3px; color: var(--muted); font-size: .79rem; }
+    .icon { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+    .notice {
+      margin: 12px 14px 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: oklch(.94 .048 82);
+      color: oklch(.31 .06 66);
+      font-size: .85rem;
+    }
+    .notice strong { color: oklch(.27 .075 58); }
+
+    .day-nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin-top: 14px;
+      padding: 10px 0;
+      background: oklch(1 0 0 / .94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .day-nav { display: flex; gap: 8px; overflow-x: auto; padding: 0 14px; scrollbar-width: none; scroll-snap-type: x proximity; }
+    .day-nav::-webkit-scrollbar { display: none; }
+    .day-tab {
+      flex: 0 0 auto;
+      min-width: 61px;
+      padding: 8px 11px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: var(--surface);
+      text-align: center;
+      cursor: pointer;
+      scroll-snap-align: center;
+    }
+    .day-tab span { display: block; font-size: .76rem; line-height: 1.2; }
+    .day-tab strong { display: block; margin-top: 2px; font-size: .91rem; }
+    .day-tab.active { color: white; background: var(--primary-dark); }
+
+    main { padding: 4px 14px 0; }
+    .day { display: none; padding-top: 16px; animation: enter .18s cubic-bezier(.22, 1, .36, 1); }
+    .day.active { display: block; }
+    @keyframes enter { from { opacity: .55; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .day-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 0 2px 15px; }
+    .day-heading h2 { margin: 0; font-size: 1.38rem; line-height: 1.25; letter-spacing: -.02em; text-wrap: balance; }
+    .day-heading p { margin: 4px 0 0; color: var(--muted); font-size: .86rem; }
+    .route-distance { flex: 0 0 auto; color: var(--accent); font-size: .78rem; font-weight: 750; }
+
+    .timeline { position: relative; }
+    .stop { display: grid; grid-template-columns: 58px 24px minmax(0, 1fr); gap: 7px; position: relative; padding-bottom: 18px; }
+    .stop::after { content: ""; position: absolute; left: 69px; top: 25px; bottom: -1px; width: 2px; background: var(--line); }
+    .stop:last-child::after { display: none; }
+    .time { padding-top: 13px; color: var(--muted); font-variant-numeric: tabular-nums; font-size: .8rem; font-weight: 700; text-align: right; }
+    .dot { position: relative; z-index: 1; width: 12px; height: 12px; margin: 16px auto 0; border: 3px solid white; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    .stop.transport .dot { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+    .stop-card { min-width: 0; padding: 13px 13px 12px; border-radius: var(--radius); background: var(--surface); }
+    .stop.transport .stop-card { padding: 10px 13px; background: var(--surface-blue); }
+    .stop-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .stop h3 { margin: 0; font-size: 1rem; line-height: 1.35; }
+    .duration { flex: 0 0 auto; padding: 3px 7px; border-radius: 999px; background: oklch(.9 .025 48); color: oklch(.39 .07 48); font-size: .69rem; font-weight: 750; }
+    .stop.transport .duration { background: oklch(.89 .04 225); color: var(--accent); }
+    .stop p { margin: 6px 0 0; color: var(--muted); font-size: .84rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { padding: 3px 7px; border-radius: 5px; color: oklch(.34 .055 47); background: oklch(.92 .035 63); font-size: .72rem; font-weight: 700; }
+    .tag.blue { color: oklch(.31 .08 230); background: oklch(.91 .045 226); }
+    .tag.green { color: oklch(.3 .085 150); background: oklch(.92 .05 151); }
+    .actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 36px;
+      padding: 7px 10px;
+      border: 1px solid oklch(.79 .03 48);
+      border-radius: 9px;
+      color: var(--ink);
+      background: white;
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .action.primary { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
+    .action .icon { width: 15px; height: 15px; }
+
+    details { margin: 4px 0 18px 89px; border-top: 1px solid var(--line); }
+    summary { padding: 12px 0; color: var(--accent); font-size: .85rem; font-weight: 750; cursor: pointer; }
+    .day-tip { padding: 0 0 4px; color: var(--muted); font-size: .84rem; }
+
+    .panel { margin: 20px 0 0; padding: 16px; border-radius: var(--radius); background: var(--surface-blue); }
+    .panel h2 { margin: 0 0 12px; font-size: 1.08rem; }
+    .check-grid { display: grid; gap: 4px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; cursor: pointer; }
+    .check-item + .check-item { border-top: 1px solid oklch(.86 .02 225); }
+    .check-item input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--primary-dark); }
+    .check-item span { font-size: .88rem; }
+    .check-item input:checked + span { color: var(--muted); text-decoration: line-through; }
+    textarea { width: 100%; min-height: 120px; resize: vertical; padding: 12px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; line-height: 1.55; }
+    .save-state { margin-top: 6px; color: var(--muted); font-size: .75rem; }
+
+    .info-section { display: none; padding: 22px 14px 0; }
+    .info-section.active { display: block; }
+    .info-section h2 { margin: 0 0 12px; font-size: 1.28rem; }
+    .info-list { margin: 0; padding: 0; list-style: none; }
+    .info-list li { padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .info-list strong { display: block; font-size: .91rem; }
+    .info-list span { display: block; margin-top: 3px; color: var(--muted); font-size: .82rem; }
+    .info-list a { color: var(--accent); font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .source-note { margin-top: 16px; color: var(--muted); font-size: .77rem; }
+
+    .bottom-nav {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      bottom: 0;
+      width: min(100%, 760px);
+      height: calc(var(--nav-height) + var(--safe-bottom));
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 7px 10px calc(7px + var(--safe-bottom));
+      border-top: 1px solid var(--line);
+      background: oklch(1 0 0 / .96);
+      backdrop-filter: blur(12px);
+    }
+    .bottom-action { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font-size: .72rem; font-weight: 700; cursor: pointer; }
+    .bottom-action .icon { width: 21px; height: 21px; }
+    .bottom-action.active { color: var(--primary-dark); background: oklch(.94 .035 48); }
+    .toast { position: fixed; z-index: 40; left: 50%; bottom: calc(80px + var(--safe-bottom)); transform: translate(-50%, 12px); padding: 9px 14px; border-radius: 9px; color: white; background: oklch(.22 .02 42); font-size: .82rem; opacity: 0; pointer-events: none; transition: .18s ease-out; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (min-width: 680px) {
+      body { background: oklch(.95 .008 225); }
+      .shell { min-height: 100vh; background: white; box-shadow: 0 0 8px oklch(.2 0 0 / .08); }
+      .hero { padding-left: 28px; padding-right: 28px; }
+      .essentials, main, .info-section { padding-left: 22px; padding-right: 22px; }
+      .day-nav { padding-left: 22px; padding-right: 22px; }
+    }
+    @media print {
+      body { background: white; font-size: 12px; }
+      .shell { width: 100%; max-width: none; padding: 0; }
+      .hero { color: var(--ink); background: white; border-bottom: 2px solid var(--ink); }
+      .hero p { color: var(--muted); }
+      .hero-status, .sun-mark, .day-nav-wrap, .bottom-nav, .actions, .toast, .panel { display: none !important; }
+      .day { display: block !important; break-before: page; animation: none; }
+      .day:first-of-type { break-before: auto; }
+      .stop-card { break-inside: avoid; }
+      details { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>沖繩 7 日自駕</h1>
+          <p>2026.10.06 週二 — 10.12 週一</p>
+        </div>
+        <svg class="sun-mark" aria-hidden="true" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8" fill="currentColor" stroke="none"/><path d="M24 3v7M24 38v7M3 24h7M38 24h7M9.2 9.2l5 5M33.8 33.8l5 5M38.8 9.2l-5 5M14.2 33.8l-5 5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="hero-status">
+        <span class="status-chip">6 晚</span>
+        <span class="status-chip">5 天租車</span>
+        <span class="status-chip">日本時間 +1 小時</span>
+      </div>
+    </header>
+
+    <section class="essentials" aria-label="交通摘要">
+      <article class="essential">
+        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>去程 IT230</div>
+        <strong>10/6　06:50 → 09:20</strong>
+        <small>桃園 → 那霸｜當地時間</small>
+      </article>
+      <article class="essential">
+        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>回程 IT231</div>
+        <strong>10/12　10:10 → 10:40</strong>
+        <small>那霸 → 桃園｜各地時間</small>
+      </article>
+      <article class="essential wide">
+        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#car"/></svg>OTS 租車</div>
+        <strong>10/6 11:00 臨空豐崎取車　→　10/11 17:00 DFS 還車</strong>
+        <small>機場至臨空豐崎有免費接駁；還車前預留加油與市區塞車時間</small>
+      </article>
+    </section>
+
+    <div class="notice"><strong>行程假設：</strong>年份為 2026、住宿以那霸／中南部為基準。車程為一般路況估算；10 月營業公告與活動時段請於出發前 7 天再確認。</div>
+
+    <div class="day-nav-wrap" id="dayNavWrap">
+      <nav class="day-nav" aria-label="選擇日期" id="dayNav">
+        <button class="day-tab active" data-day="d0"><span>週二</span><strong>10/6</strong></button>
+        <button class="day-tab" data-day="d1"><span>週三</span><strong>10/7</strong></button>
+        <button class="day-tab" data-day="d2"><span>週四</span><strong>10/8</strong></button>
+        <button class="day-tab" data-day="d3"><span>週五</span><strong>10/9</strong></button>
+        <button class="day-tab" data-day="d4"><span>週六</span><strong>10/10</strong></button>
+        <button class="day-tab" data-day="d5"><span>週日</span><strong>10/11</strong></button>
+        <button class="day-tab" data-day="d6"><span>週一</span><strong>10/12</strong></button>
+      </nav>
+    </div>
+
+    <main id="scheduleView">
+      <section class="day active" id="d0" data-date="2026-10-06">
+        <div class="day-heading"><div><h2>抵達沖繩・取車</h2><p>留白適應日，不塞景點</p></div><span class="route-distance">機場南側</span></div>
+        <div class="timeline">
+          <article class="stop"><div class="time">09:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>抵達那霸機場</h3><span class="duration">約 90 分</span></div><p>入境、領行李、購買／啟用 eSIM。跟著 OTS 指示前往免費接駁車乘車處。</p><div class="tags"><span class="tag">護照</span><span class="tag">租車憑證</span><span class="tag blue">日本時間</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Naha+Airport" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>開啟地圖</a></div></div></article>
+          <article class="stop transport"><div class="time">10:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>搭 OTS 免費接駁</h3><span class="duration">約 20 分</span></div><p>道路狀況可能影響車程；找不到乘車處時直接致電營業所。</p></div></article>
+          <article class="stop"><div class="time">11:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>OTS 臨空豐崎取車</h3><span class="duration">45–60 分</span></div><p>確認 ETC 卡、保險、車身刮痕、油種與還車規則。地址：豊見城市豊崎3-37。</p><div class="tags"><span class="tag">預約時間固定</span><span class="tag green">08:00–19:00</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=OTS+Rent-a-car+Rinku+Toyosaki" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="tel:+81988568877"><svg class="icon"><use href="#phone"/></svg>098-856-8877</a></div></div></article>
+          <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>午餐・採買・前往住宿</h3><span class="duration">彈性</span></div><p>推薦先在附近 iias 沖繩豐崎用餐，補飲水與車用品，再前往住宿。若精神好，可散步豐崎美 SUN 海灘。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=iias+Okinawa+Toyosaki" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>iias 豐崎</a><a class="action" href="https://maps.google.com/?q=Toyosaki+Chura+Sun+Beach" target="_blank" rel="noopener">美 SUN 海灘</a></div></div></article>
+        </div>
+        <details><summary>今天的提醒</summary><div class="day-tip">台灣駕照不可直接使用；請攜帶台灣駕照正本與日文譯本。日本靠左行駛，右轉時特別注意不要誤入對向車道。</div></details>
+      </section>
+
+      <section class="day" id="d1" data-date="2026-10-07">
+        <div class="day-heading"><div><h2>名護・古宇利島</h2><p>原圖 Day 1｜北部景觀日</p></div><span class="route-distance">長程駕駛</span></div>
+        <div class="timeline">
+          <article class="stop transport"><div class="time">08:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>住宿出發 → 名護</h3><span class="duration">約 90 分</span></div><p>走沖繩自動車道；可在伊芸 SA 短暫休息。</p></div></article>
+          <article class="stop"><div class="time">10:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護自然動植物公園</h3><span class="duration">2 小時</span></div><p>原圖景點 1A。建議對照訂票名稱確認是否指 Neo Park Okinawa；園區大，穿好走的鞋。</p><div class="tags"><span class="tag">原圖 1A</span><span class="tag blue">名稱請確認</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Neo+Park+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.neopark.co.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
+          <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護午餐</h3><span class="duration">60 分</span></div><p>避免趕路，午餐放在名護市區；用餐後再前往古宇利島。</p></div></article>
+          <article class="stop transport"><div class="time">13:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護 → 古宇利島</h3><span class="duration">約 35 分</span></div><p>過古宇利大橋前後都有拍照點；勿臨停於橋面。</p></div></article>
+          <article class="stop"><div class="time">14:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>古宇利島・海灘</h3><span class="duration">90 分</span></div><p>原圖景點 1B。先逛古宇利海灘，再依天候決定是否上古宇利海洋塔。</p><div class="tags"><span class="tag">原圖 1B</span><span class="tag green">塔 10:00–18:00</span><span class="tag">最晚入園 17:30</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Kouri+Beach" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>古宇利海灘</a><a class="action" href="https://maps.google.com/?q=Kouri+Ocean+Tower" target="_blank" rel="noopener">海洋塔</a><a class="action" href="https://www.kouri-oceantower.com/facility.html" target="_blank" rel="noopener">官方資訊</a></div></div></article>
+          <article class="stop transport"><div class="time">17:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回住宿</h3><span class="duration">約 100 分</span></div><p>北部傍晚易疲勞；不要把晚餐訂得太早。</p></div></article>
+        </div>
+        <details><summary>雨天調整</summary><div class="day-tip">古宇利島遇大雨可縮短，改逛名護鳳梨園或 AEON 名護店；強風時海洋塔屋頂可能關閉。</div></details>
+      </section>
+
+      <section class="day" id="d2" data-date="2026-10-08">
+        <div class="day-heading"><div><h2>美麗海・翡翠海灘</h2><p>原圖 Day 2｜早到避開人潮</p></div><span class="route-distance">北部一日</span></div>
+        <div class="timeline">
+          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>住宿出發 → 海洋博公園</h3><span class="duration">約 2 小時</span></div><p>目標停 P7 北門立體停車場；園內步行距離長。</p></div></article>
+          <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩美麗海水族館</h3><span class="duration">3–3.5 小時</span></div><p>原圖景點 2A。先看黑潮之海，再依當日表演時間調整海豚劇場。</p><div class="tags"><span class="tag">原圖 2A</span><span class="tag green">08:30–18:30</span><span class="tag">最晚入館 17:30</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+Churaumi+Aquarium" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://churaumi.okinawa/guide/hour/" target="_blank" rel="noopener">營業資訊</a></div></div></article>
+          <article class="stop"><div class="time">12:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>園區午餐</h3><span class="duration">60 分</span></div><p>館內餐廳尖峰可能排隊；也可準備簡單食物在園區休息區用餐。</p></div></article>
+          <article class="stop"><div class="time">13:45</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>翡翠海灘</h3><span class="duration">90 分</span></div><p>原圖景點 2B。10 月屬海洋博公園通常期，設施時間較夏季短；依浪況與救生公告決定是否下水。</p><div class="tags"><span class="tag">原圖 2B</span><span class="tag blue">看當日海況</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Emerald+Beach+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop"><div class="time">15:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>備瀨福木林道（選配）</h3><span class="duration">45 分</span></div><p>若體力足夠再去；下雨或孩子累了就直接返程。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Bise+Fukugi+Tree+Road" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop transport"><div class="time">16:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回住宿</h3><span class="duration">約 2 小時</span></div><p>回程可視疲勞在許田休息站停留。</p></div></article>
+        </div>
+        <details><summary>今天的提醒</summary><div class="day-tip">水族館官方目前公告 2027/3/31 前無計畫休館（颱風等臨時狀況除外）。海灘設施則依海洋博公園通常期時間運作。</div></details>
+      </section>
+
+      <section class="day" id="d3" data-date="2026-10-09">
+        <div class="day-heading"><div><h2>親子樂園・植物園</h2><p>原圖 Day 3｜中部順路走</p></div><span class="route-distance">中部短程</span></div>
+        <div class="timeline">
+          <article class="stop"><div class="time">09:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩兒童王國</h3><span class="duration">3 小時</span></div><p>原圖景點 3A。動物園與兒童設施範圍大，先挑必看區域，不必硬走完。</p><div class="tags"><span class="tag">原圖 3A</span><span class="tag blue">週二通常休園</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+Zoo+and+Museum" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.okzm.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
+          <article class="stop transport"><div class="time">12:35</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>兒童王國 → AEON Mall Rycom</h3><span class="duration">約 10 分</span></div><p>距離近，適合午餐與室內休息。</p></div></article>
+          <article class="stop"><div class="time">12:50</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>永旺夢樂城沖繩來客夢</h3><span class="duration">2 小時</span></div><p>原圖景點 3B。先用餐再採買；大型商場容易超時，設定 15:00 離開。</p><div class="tags"><span class="tag">原圖 3B</span><span class="tag green">餐飲選擇多</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=AEON+MALL+Okinawa+Rycom" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop transport"><div class="time">15:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Rycom → 東南植物樂園</h3><span class="duration">約 20 分</span></div><p>下午仍可能炎熱，先補水再入園。</p></div></article>
+          <article class="stop"><div class="time">15:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>東南植物樂園</h3><span class="duration">2–2.5 小時</span></div><p>原圖景點 3C。官方時段會隨季節活動變更；2026 年 10 月活動尚需出發前確認。</p><div class="tags"><span class="tag">原圖 3C</span><span class="tag blue">時段浮動</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Southeast+Botanical+Gardens+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.southeast-botanical.jp/information/" target="_blank" rel="noopener">營業資訊</a></div></div></article>
+          <article class="stop transport"><div class="time">18:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>晚餐・返回住宿</h3><span class="duration">彈性</span></div><p>若 10 月燈飾尚未開始，不建議為了等天黑滯留。</p></div></article>
+        </div>
+        <details><summary>時間不夠怎麼刪</summary><div class="day-tip">優先保留兒童王國與東南植物樂園；Rycom 壓縮為午餐 60–90 分鐘即可。若下雨則反過來，把 Rycom 留久一點。</div></details>
+      </section>
+
+      <section class="day" id="d4" data-date="2026-10-10">
+        <div class="day-heading"><div><h2>玉泉洞・美國村</h2><p>原圖 Day 4｜南部到中部</p></div><span class="route-distance">一路向北</span></div>
+        <div class="timeline">
+          <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩世界文化王國・玉泉洞</h3><span class="duration">3 小時</span></div><p>原圖景點 4A。洞內濕滑且有階梯；先走玉泉洞，再看表演與文化村。</p><div class="tags"><span class="tag">原圖 4A</span><span class="tag blue">洞內約 21°C</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Okinawa+World" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.gyokusendo.co.jp/okinawaworld/" target="_blank" rel="noopener">官方網站</a></div></div></article>
+          <article class="stop"><div class="time">12:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>午餐</h3><span class="duration">60 分</span></div><p>可在園內或往北途中用餐，避免餓著開長程。</p></div></article>
+          <article class="stop transport"><div class="time">13:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>沖繩世界 → 安良波海灘</h3><span class="duration">約 55 分</span></div><p>週六午後可能塞車，預留 15–20 分鐘緩衝。</p></div></article>
+          <article class="stop"><div class="time">14:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>安良波海灘</h3><span class="duration">75 分</span></div><p>原圖景點 4B。以散步、玩沙為主；下水依現場開放與海況公告。</p><div class="tags"><span class="tag">原圖 4B</span><span class="tag blue">看當日海況</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Araha+Beach" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop transport"><div class="time">15:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>海灘 → 美國村</h3><span class="duration">約 10 分</span></div><p>停車場午後可能滿位，跟隨現場導引，不要繞同一區太久。</p></div></article>
+          <article class="stop"><div class="time">16:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>美國村・晚餐・夕陽</h3><span class="duration">3–4 小時</span></div><p>原圖景點 4C。商店營業各自不同；先看海邊夕陽，再吃晚餐與逛街。</p><div class="tags"><span class="tag">原圖 4C</span><span class="tag green">夕陽時段</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Mihama+American+Village" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+        </div>
+        <details><summary>今天的提醒</summary><div class="day-tip">玉泉洞不適合推嬰兒車，全程走完再回到地面。若同行者行動不便，先查無障礙替代動線。</div></details>
+      </section>
+
+      <section class="day" id="d5" data-date="2026-10-11">
+        <div class="day-heading"><div><h2>水族館・購物・還車</h2><p>原圖 Day 5｜17:00 前還車</p></div><span class="route-distance">時間固定</span></div>
+        <div class="timeline">
+          <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>DMM Kariyushi 水族館</h3><span class="duration">2–2.5 小時</span></div><p>原圖景點 5A。就在 iias 沖繩豐崎內，開館即入場最省時間。</p><div class="tags"><span class="tag">原圖 5A</span><span class="tag green">通常 09:00–19:00</span><span class="tag">最晚入館前 60 分</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=DMM+Kariyushi+Aquarium" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://kariyushi-aquarium.com/opening-hours/" target="_blank" rel="noopener">當日營業</a></div></div></article>
+          <article class="stop transport"><div class="time">11:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>豐崎 → PARCO CITY</h3><span class="duration">約 35 分</span></div><p>週日市區交通較慢，保守抓 45 分鐘。</p></div></article>
+          <article class="stop"><div class="time">12:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>San-A 浦添西海岸 PARCO CITY</h3><span class="duration">2 小時</span></div><p>原圖景點 5B。午餐＋最後採買；14:30 必須離開，避免壓縮還車。</p><div class="tags"><span class="tag">原圖 5B</span><span class="tag blue">設 14:20 鬧鐘</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=San-A+Urasoe+West+Coast+PARCO+CITY" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a></div></div></article>
+          <article class="stop transport"><div class="time">14:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>加滿油 → DFS</h3><span class="duration">預留 2 小時</span></div><p>找 DFS 附近加油站並保留收據；市區塞車與還車檢查都算在內。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=gas+station+near+T+Galleria+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>附近加油站</a></div></div></article>
+          <article class="stop"><div class="time">16:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>OTS DFS 營業所還車</h3><span class="duration">17:00 前</span></div><p>位於 T Galleria 沖繩／歌町站旁。取回所有行李、ETC 卡與個人物品。</p><div class="tags"><span class="tag">預約時間固定</span><span class="tag blue">保留加油收據</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=OTS+Rent-a-car+DFS+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.otsinternational.jp/otsrentacar/okinawa/office/dfs/" target="_blank" rel="noopener">營業所資訊</a></div></div></article>
+          <article class="stop transport"><div class="time">17:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>歌町站 → 國際通</h3><span class="duration">單軌約 10 分</span></div><p>搭 Yui Rail 至牧志站或縣廳前站。</p></div></article>
+          <article class="stop"><div class="time">17:45</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>國際通・晚餐</h3><span class="duration">2–3 小時</span></div><p>原圖景點 5C。最後一晚只買方便帶上飛機的物品，避免行李超重。</p><div class="tags"><span class="tag">原圖 5C</span><span class="tag green">不需開車</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Kokusai-dori+Naha" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>開啟地圖</a></div></div></article>
+        </div>
+        <details open><summary>還車日不可妥協的緩衝</summary><div class="day-tip">PARCO CITY 最晚 14:30 離開。若 15:30 仍未接近 DFS，直接取消加碼行程；還車逾時風險高於少逛一間店。</div></details>
+      </section>
+
+      <section class="day" id="d6" data-date="2026-10-12">
+        <div class="day-heading"><div><h2>返台</h2><p>國際線提早抵達機場</p></div><span class="route-distance">無租車</span></div>
+        <div class="timeline">
+          <article class="stop"><div class="time">06:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>起床・退房前檢查</h3><span class="duration">30 分</span></div><p>護照、手機、錢包、充電器、退稅商品、托運液體。早餐以可外帶為主。</p></div></article>
+          <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>前往那霸機場</h3><span class="duration">依住宿調整</span></div><p>若住國際通附近，可搭單軌或預約計程車；尖峰時段不要壓線。</p></div></article>
+          <article class="stop"><div class="time">07:40</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>抵達那霸機場</h3><span class="duration">起飛前 2.5 小時</span></div><p>辦理報到、托運與安檢。依虎航最新通知與登機證上的櫃台／登機門為準。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Naha+Airport+International+Terminal" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>機場地圖</a></div></div></article>
+          <article class="stop"><div class="time">10:10</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>IT231 那霸 → 桃園</h3><span class="duration">抵台 10:40</span></div><p>兩地有 1 小時時差；航班顯示時間皆為當地時間。</p><div class="tags"><span class="tag">航班固定</span><span class="tag blue">確認登機門</span></div></div></article>
+        </div>
+        <details><summary>今天的提醒</summary><div class="day-tip">廉航報到與行李規定可能調整，請在出發前一天查看台灣虎航 App／Email，不以本頁時間取代航空公司通知。</div></details>
+      </section>
+
+      <section class="panel" aria-labelledby="checkTitle">
+        <h2 id="checkTitle">出發前清單</h2>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" data-check="passport"><span>護照、台灣駕照正本、日文譯本</span></label>
+          <label class="check-item"><input type="checkbox" data-check="booking"><span>機票、住宿、OTS 租車預約資料離線截圖</span></label>
+          <label class="check-item"><input type="checkbox" data-check="insurance"><span>旅平險、不便險、租車保險內容確認</span></label>
+          <label class="check-item"><input type="checkbox" data-check="data"><span>eSIM／漫遊開通，離線下載沖繩 Google Maps</span></label>
+          <label class="check-item"><input type="checkbox" data-check="tickets"><span>熱門景點票券與 QR Code 離線保存</span></label>
+          <label class="check-item"><input type="checkbox" data-check="weather"><span>出發前 7 天確認颱風、海況與 2026 年 10 月營業公告</span></label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="notesTitle">
+        <h2 id="notesTitle">旅行備忘</h2>
+        <textarea id="notes" placeholder="可記住宿地址、停車位置、預約編號、想吃的餐廳……" aria-label="旅行備忘"></textarea>
+        <div class="save-state" id="saveState">內容只會儲存在這台裝置的瀏覽器</div>
+      </section>
+    </main>
+
+    <section class="info-section" id="infoView">
+      <h2>實用資訊</h2>
+      <ul class="info-list">
+        <li><strong>緊急電話</strong><span>警察 110｜消防／救護車 119｜海上事故 118</span></li>
+        <li><strong>台北駐日經濟文化代表處 那霸分處</strong><span><a href="tel:+81988627008">+81-98-862-7008</a>｜護照遺失等緊急協助</span></li>
+        <li><strong>OTS 臨空豐崎營業所</strong><span><a href="tel:+81988568877">098-856-8877</a>｜豊見城市豊崎3-37｜08:00–19:00</span></li>
+        <li><strong>日本道路救援 JAF</strong><span><a href="tel:+81570008139">0570-00-8139</a> 或手機短碼 #8139</span></li>
+        <li><strong>加油用語</strong><span>「レギュラー、満タンでお願いします」＝一般汽油，請加滿。</span></li>
+        <li><strong>停車記錄</strong><span>停好車立刻拍下樓層、區域編號與停車場入口；大型商場很容易找不到車。</span></li>
+        <li><strong>颱風／豪雨</strong><span>先查景點官網與航空公司通知；不要前往封閉海灘、海堤或強風中的古宇利大橋。</span></li>
+      </ul>
+      <p class="source-note">營業資訊整理於 2026/8/5，來源以景點與 OTS 官方網站為主。官方公告、天候與現場指示優先於本頁。</p>
+      <div class="actions"><button class="action" id="printBtn"><svg class="icon"><use href="#print"/></svg>列印／存成 PDF</button><button class="action" id="copyBtn"><svg class="icon"><use href="#copy"/></svg>複製行程摘要</button></div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="主要功能">
+      <button class="bottom-action active" data-view="schedule"><svg class="icon" aria-hidden="true"><use href="#calendar"/></svg>每日行程</button>
+      <button class="bottom-action" data-view="today"><svg class="icon" aria-hidden="true"><use href="#target"/></svg>旅行今日</button>
+      <button class="bottom-action" data-view="info"><svg class="icon" aria-hidden="true"><use href="#info"/></svg>實用資訊</button>
+    </nav>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute">
+    <symbol id="plane" viewBox="0 0 24 24"><path d="M22 2 9.7 14.3M22 2l-7.8 20-4.5-7.7L2 9.8 22 2Z"/></symbol>
+    <symbol id="car" viewBox="0 0 24 24"><path d="M5 17h14M6 17v2M18 17v2M4 13l2-6h12l2 6v4H4v-4Z"/><path d="M7 13h.01M17 13h.01"/></symbol>
+    <symbol id="map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></symbol>
+    <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
+    <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+    <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+    <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+    <symbol id="print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></symbol>
+    <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  </svg>
+
+  <script>
+    (() => {
+      const tabs = [...document.querySelectorAll('.day-tab')];
+      const days = [...document.querySelectorAll('.day')];
+      const bottomActions = [...document.querySelectorAll('.bottom-action')];
+      const scheduleView = document.getElementById('scheduleView');
+      const infoView = document.getElementById('infoView');
+      const dayNavWrap = document.getElementById('dayNavWrap');
+      const toast = document.getElementById('toast');
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+      }
+
+      function showDay(id, shouldScroll = true) {
+        days.forEach(day => day.classList.toggle('active', day.id === id));
+        tabs.forEach(tab => {
+          const active = tab.dataset.day === id;
+          tab.classList.toggle('active', active);
+          tab.setAttribute('aria-current', active ? 'date' : 'false');
+          if (active) tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+        localStorage.setItem('okinawa-active-day', id);
+        if (shouldScroll) window.scrollTo({ top: dayNavWrap.offsetTop, behavior: 'smooth' });
+      }
+
+      function setView(view) {
+        const isInfo = view === 'info';
+        scheduleView.style.display = isInfo ? 'none' : 'block';
+        infoView.classList.toggle('active', isInfo);
+        dayNavWrap.style.display = isInfo ? 'none' : 'block';
+        bottomActions.forEach(btn => btn.classList.toggle('active', btn.dataset.view === (isInfo ? 'info' : 'schedule')));
+        if (isInfo) window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      tabs.forEach(tab => tab.addEventListener('click', () => { setView('schedule'); showDay(tab.dataset.day, false); }));
+      bottomActions.forEach(btn => btn.addEventListener('click', () => {
+        if (btn.dataset.view === 'info') return setView('info');
+        setView('schedule');
+        if (btn.dataset.view === 'today') {
+          const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+          const match = days.find(day => day.dataset.date === today);
+          if (match) { showDay(match.id, false); showToast('已切換到旅行今日'); }
+          else { showToast('目前不在旅行日期內'); }
+        }
+      }));
+
+      document.querySelectorAll('[data-check]').forEach(box => {
+        const key = 'okinawa-check-' + box.dataset.check;
+        box.checked = localStorage.getItem(key) === '1';
+        box.addEventListener('change', () => localStorage.setItem(key, box.checked ? '1' : '0'));
+      });
+
+      const notes = document.getElementById('notes');
+      const saveState = document.getElementById('saveState');
+      notes.value = localStorage.getItem('okinawa-notes') || '';
+      let saveTimer;
+      notes.addEventListener('input', () => {
+        saveState.textContent = '儲存中…';
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+          localStorage.setItem('okinawa-notes', notes.value);
+          saveState.textContent = '已儲存在這台裝置';
+        }, 300);
+      });
+
+      document.getElementById('printBtn').addEventListener('click', () => window.print());
+      document.getElementById('copyBtn').addEventListener('click', async () => {
+        const summary = `沖繩 2026/10/6–10/12\n10/6 抵達、OTS 臨空豐崎取車\n10/7 名護自然動植物公園、古宇利島\n10/8 美麗海水族館、翡翠海灘\n10/9 沖繩兒童王國、AEON Rycom、東南植物樂園\n10/10 沖繩世界／玉泉洞、安良波海灘、美國村\n10/11 DMM 水族館、PARCO CITY、17:00 DFS 還車、國際通\n10/12 IT231 10:10 返回桃園`;
+        try { await navigator.clipboard.writeText(summary); showToast('行程摘要已複製'); }
+        catch { showToast('瀏覽器不允許自動複製'); }
+      });
+
+      const saved = localStorage.getItem('okinawa-active-day');
+      const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+      const todayMatch = days.find(day => day.dataset.date === today);
+      showDay(todayMatch?.id || (days.some(d => d.id === saved) ? saved : 'd0'), false);
+    })();
+  </script>
+</body>
+</html>

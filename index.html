@@ -47,58 +47,75 @@
     .hero {
       position: relative;
       overflow: hidden;
-      padding: calc(24px + env(safe-area-inset-top, 0px)) 20px 24px;
+      padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 13px;
       color: white;
       background: var(--accent);
     }
     .hero::after {
       content: "";
       position: absolute;
-      width: 210px;
-      height: 210px;
-      right: -86px;
-      top: -95px;
-      border: 32px solid oklch(1 0 0 / .10);
+      width: 150px;
+      height: 150px;
+      right: -68px;
+      top: -82px;
+      border: 24px solid oklch(1 0 0 / .10);
       border-radius: 50%;
     }
-    .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; position: relative; z-index: 1; }
+    .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
     .hero-top > div { min-width: 0; }
-    .hero h1 { margin: 0; font-size: 1.9rem; line-height: 1.18; letter-spacing: -.025em; text-wrap: balance; }
-    .hero p { margin: 7px 0 0; color: oklch(.92 .025 225); font-size: .94rem; }
-    .trip-dates { display: grid; gap: 1px; line-height: 1.4; }
-    .sun-mark { flex: 0 0 auto; width: 48px; height: 48px; color: oklch(.86 .16 74); }
+    .hero h1 { margin: 0; font-size: 1.42rem; line-height: 1.2; letter-spacing: -.02em; text-wrap: balance; }
+    .hero p { margin: 3px 0 0; color: oklch(.92 .025 225); font-size: .8rem; }
+    .trip-dates { line-height: 1.35; }
+    .sun-mark { flex: 0 0 auto; width: 34px; height: 34px; color: oklch(.86 .16 74); }
     .hero-status {
       position: relative;
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 20px;
+      gap: 6px;
+      margin-top: 9px;
     }
-    .status-chip { padding: 6px 10px; border-radius: 999px; background: oklch(1 0 0 / .13); color: white; font-size: .82rem; font-weight: 700; }
+    .status-chip { padding: 3px 8px; border-radius: 999px; background: oklch(1 0 0 / .13); color: white; font-size: .74rem; font-weight: 700; }
 
-    .essentials { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 14px 14px 4px; }
-    .flight-details { grid-column: 1 / -1; margin: 0; border: 0; }
-    .flight-details > summary {
+    .essentials { display: grid; gap: 8px; padding: 10px 14px 2px; }
+    .transport-details { margin: 0; border: 0; }
+    .transport-details > summary {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-height: 48px;
-      padding: 11px 14px;
+      gap: 9px;
+      min-height: 44px;
+      padding: 9px 12px;
+      border: 1px solid transparent;
       border-radius: 11px;
       color: var(--ink);
       background: var(--surface);
       cursor: pointer;
       list-style: none;
     }
-    .flight-details > summary::-webkit-details-marker { display: none; }
-    .flight-details > summary::after { content: "展開"; margin-left: auto; color: var(--accent); font-size: .76rem; font-weight: 750; }
-    .flight-details[open] > summary::after { content: "收合"; }
-    .flight-details[open] > summary { background: var(--surface-blue); }
-    .flight-summary-copy { min-width: 0; }
-    .flight-summary-copy strong { display: block; font-size: .88rem; }
-    .flight-summary-copy small { display: block; margin-top: 1px; color: var(--muted); font-size: .75rem; font-weight: 600; }
-    .flight-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+    .transport-details > summary::-webkit-details-marker { display: none; }
+    .transport-details > summary::after { content: "展開"; margin-left: auto; color: var(--accent); font-size: .73rem; font-weight: 750; }
+    .transport-details[open] > summary::after { content: "收合"; }
+    .transport-details[open] > summary { background: var(--surface-blue); }
+    .transport-details.is-relevant > summary {
+      border-color: oklch(.74 .11 64);
+      background: oklch(.95 .045 72);
+    }
+    .transport-summary-copy { min-width: 0; }
+    .transport-summary-copy strong { display: block; font-size: .88rem; }
+    .transport-summary-copy small { display: block; margin-top: 1px; color: var(--muted); font-size: .74rem; font-weight: 600; }
+    .transport-reminder {
+      flex: 0 0 auto;
+      padding: 3px 7px;
+      border-radius: 999px;
+      color: white;
+      background: var(--primary-dark);
+      font-size: .69rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .transport-reminder[hidden] { display: none; }
+    .transport-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+    .transport-grid.single { grid-template-columns: minmax(0, 1fr); }
     .essential {
       min-width: 0;
       padding: 14px;
@@ -115,18 +132,18 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      margin-top: 14px;
-      padding: 10px 0;
+      margin-top: 8px;
+      padding: 6px 0;
       background: oklch(1 0 0 / .94);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
-    .day-nav { display: flex; gap: 8px; overflow-x: auto; padding: 0 14px; scrollbar-width: none; scroll-snap-type: x proximity; }
+    .day-nav { display: flex; gap: 6px; overflow-x: auto; padding: 0 14px; scrollbar-width: none; scroll-snap-type: x proximity; }
     .day-nav::-webkit-scrollbar { display: none; }
     .day-tab {
       flex: 0 0 auto;
-      min-width: 61px;
-      padding: 8px 11px;
+      min-width: 56px;
+      padding: 6px 9px;
       border: 0;
       border-radius: 10px;
       color: var(--muted);
@@ -135,8 +152,8 @@
       cursor: pointer;
       scroll-snap-align: center;
     }
-    .day-tab span { display: block; font-size: .76rem; line-height: 1.2; }
-    .day-tab strong { display: block; margin-top: 2px; font-size: .91rem; }
+    .day-tab span { display: block; font-size: .7rem; line-height: 1.15; }
+    .day-tab strong { display: block; margin-top: 1px; font-size: .84rem; }
     .day-tab.active { color: white; background: var(--primary-dark); }
 
     main { padding: 4px 14px 0; }
@@ -146,6 +163,8 @@
     .day-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 0 2px 15px; }
     .day-heading h2 { margin: 0; font-size: 1.38rem; line-height: 1.25; letter-spacing: -.02em; text-wrap: balance; }
     .day-heading p { margin: 4px 0 0; color: var(--muted); font-size: .86rem; }
+    .day-key-events { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .day-key-event { padding: 3px 7px; border-radius: 999px; color: white; background: var(--primary-dark); font-size: .7rem; font-weight: 800; }
     .route-distance { flex: 0 0 auto; color: var(--accent); font-size: .78rem; font-weight: 750; }
 
     .timeline { position: relative; }
@@ -294,8 +313,8 @@
       .day:first-of-type { break-before: auto; }
       .stop-card { break-inside: avoid; }
       .day > details { display: none; }
-      .flight-details > summary { display: none; }
-      .flight-details > .flight-grid { display: grid !important; }
+      .transport-details > summary { display: none; }
+      .transport-details > .transport-grid { display: grid !important; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -309,7 +328,7 @@
       <div class="hero-top">
         <div>
           <h1>沖繩 7 日自駕</h1>
-          <p class="trip-dates"><span>2026 年 10 月 6 日（週二）</span><span>至 10 月 12 日（週一）</span></p>
+          <p class="trip-dates">2026.10.06（週二）– 10.12（週一）</p>
         </div>
         <svg class="sun-mark" aria-hidden="true" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8" fill="currentColor" stroke="none"/><path d="M24 3v7M24 38v7M3 24h7M38 24h7M9.2 9.2l5 5M33.8 33.8l5 5M38.8 9.2l-5 5M14.2 33.8l-5 5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
       </div>
@@ -321,12 +340,14 @@
     </header>
 
     <section class="essentials" aria-label="交通摘要">
-      <details class="flight-details">
+      <details class="transport-details">
         <summary>
           <svg class="icon" aria-hidden="true"><use href="#plane"/></svg>
-          <span class="flight-summary-copy"><strong>航班資訊</strong><small>桃園 ⇄ 那霸</small></span>
+          <span class="transport-summary-copy"><strong>航班資訊</strong><small>桃園 ⇄ 那霸</small></span>
+          <span class="transport-reminder" data-reminder-date="2026-10-06" hidden>今日去程</span>
+          <span class="transport-reminder" data-reminder-date="2026-10-12" hidden>今日回程</span>
         </summary>
-        <div class="flight-grid">
+        <div class="transport-grid">
           <article class="essential">
             <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#plane"/></svg>去程 IT230</div>
             <strong>10/6　06:50 → 09:20</strong>
@@ -339,11 +360,21 @@
           </article>
         </div>
       </details>
-      <article class="essential wide">
-        <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#car"/></svg>OTS 租車</div>
-        <strong>10/6 11:00 臨空豐崎取車　→　10/11 17:00 DFS 還車</strong>
-        <small>機場至臨空豐崎有免費接駁；還車前預留加油與市區塞車時間</small>
-      </article>
+      <details class="transport-details">
+        <summary>
+          <svg class="icon" aria-hidden="true"><use href="#car"/></svg>
+          <span class="transport-summary-copy"><strong>OTS 租車</strong><small>10/6 取車・10/11 還車</small></span>
+          <span class="transport-reminder" data-reminder-date="2026-10-06" hidden>今日取車</span>
+          <span class="transport-reminder" data-reminder-date="2026-10-11" hidden>今日還車</span>
+        </summary>
+        <div class="transport-grid single">
+          <article class="essential wide">
+            <div class="essential-label"><svg class="icon" aria-hidden="true"><use href="#car"/></svg>取車與還車</div>
+            <strong>10/6 11:00 臨空豐崎取車　→　10/11 17:00 DFS 還車</strong>
+            <small>機場至臨空豐崎有免費接駁；還車前預留加油與市區塞車時間</small>
+          </article>
+        </div>
+      </details>
     </section>
 
     <div class="day-nav-wrap" id="dayNavWrap">
@@ -360,7 +391,7 @@
 
     <main id="scheduleView">
       <section class="day active" id="d0" data-date="2026-10-06">
-        <div class="day-heading"><div><h2>抵達沖繩・取車</h2><p>留白適應日，不塞景點</p></div><span class="route-distance">機場南側</span></div>
+        <div class="day-heading"><div><h2>抵達沖繩・取車</h2><p>留白適應日，不塞景點</p><div class="day-key-events" aria-label="今日重要交通"><span class="day-key-event">✈ 去程航班</span><span class="day-key-event">取車日</span></div></div><span class="route-distance">機場南側</span></div>
         <div class="timeline">
           <article class="stop"><div class="time">09:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>抵達那霸機場</h3><span class="duration">約 90 分</span></div><p>入境、領行李、購買／啟用 eSIM。跟著 OTS 指示前往免費接駁車乘車處。</p><div class="tags"><span class="tag">護照</span><span class="tag">租車憑證</span><span class="tag blue">日本時間</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Naha+Airport" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>開啟地圖</a></div></div></article>
           <article class="stop transport"><div class="time">10:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>搭 OTS 免費接駁</h3><span class="duration">約 20 分</span></div><p>道路狀況可能影響車程；找不到乘車處時直接致電營業所。</p></div></article>
@@ -375,8 +406,8 @@
         <div class="day-heading"><div><h2>名護・古宇利島</h2><p>地圖 Day 1｜北部景觀日</p></div><span class="route-distance">長程駕駛</span></div>
         <div class="timeline">
           <article class="stop transport"><div class="time">08:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>Hotel Yugaf 出發 → 名護</h3><span class="duration">短程</span></div><p>今晚續住 Hotel Yugaf Inn Okinawa；出門前確認房卡與車位。</p></div></article>
-          <article class="stop"><div class="time">10:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護自然動植物公園</h3><span class="duration">2 小時</span></div><p>地圖景點 1A。建議對照訂票名稱確認是否指 Neo Park Okinawa；園區大，穿好走的鞋。</p><div class="tags"><span class="tag">地圖 1A</span><span class="tag blue">名稱請確認</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Neo+Park+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.neopark.co.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
-          <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護午餐</h3><span class="duration">60 分</span></div><p>避免趕路，午餐放在名護市區；用餐後再前往古宇利島。</p></div></article>
+          <article class="stop"><div class="time">10:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護自然動植物公園</h3><span class="duration">2 小時</span></div><p>地圖景點 1A。建議對照訂票名稱確認是否指 Neo Park Okinawa；園區大，穿好走的鞋。</p><div class="tags"><span class="tag">地圖 1A</span><span class="tag blue">買食物進園</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Neo+Park+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://www.neopark.co.jp/" target="_blank" rel="noopener">官方網站</a></div></div></article>
+          <article class="stop"><div class="time">12:15</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護午餐 (或在動物園吃)</h3><span class="duration">60 分</span></div><p>避免趕路，午餐放在名護市區；用餐後再前往古宇利島。</p></div></article>
           <article class="stop transport"><div class="time">13:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>名護 → 古宇利島</h3><span class="duration">約 35 分</span></div><p>過古宇利大橋前後都有拍照點；勿臨停於橋面。</p></div></article>
           <article class="stop"><div class="time">14:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>古宇利島・海灘</h3><span class="duration">90 分</span></div><p>地圖景點 1B。先逛古宇利海灘，再依天候決定是否上古宇利海洋塔。</p><div class="tags"><span class="tag">地圖 1B</span><span class="tag green">塔 10:00–18:00</span><span class="tag">最晚入園 17:30</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Kouri+Beach" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>古宇利海灘</a><a class="action" href="https://maps.google.com/?q=Kouri+Ocean+Tower" target="_blank" rel="noopener">海洋塔</a><a class="action" href="https://www.kouri-oceantower.com/facility.html" target="_blank" rel="noopener">官方資訊</a></div></div></article>
           <article class="stop lodging"><div class="time">17:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>返回 Hotel Yugaf Inn Okinawa</h3><span class="duration">第 2／3 晚</span></div><p>北部傍晚易疲勞；不要把晚餐訂得太早。</p><div class="actions"><a class="action primary" href="https://maps.google.com/?q=Hotel+Yugaf+Inn+Okinawa" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>返回飯店</a></div></div></article>
@@ -427,7 +458,7 @@
       </section>
 
       <section class="day" id="d5" data-date="2026-10-11">
-        <div class="day-heading"><div><h2>水族館・購物・還車</h2><p>地圖 Day 5｜17:00 前還車</p></div><span class="route-distance">時間固定</span></div>
+        <div class="day-heading"><div><h2>水族館・購物・還車</h2><p>地圖 Day 5｜17:00 前還車</p><div class="day-key-events" aria-label="今日重要交通"><span class="day-key-event">還車日</span></div></div><span class="route-distance">時間固定</span></div>
         <div class="timeline">
           <article class="stop transport"><div class="time">08:20</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 飯店 → 豐崎</h3><span class="duration">約 25 分</span></div><p>今晚續住同一間飯店；只帶當日用品，行李留在房內。</p></div></article>
           <article class="stop"><div class="time">09:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>DMM Kariyushi 水族館</h3><span class="duration">2–2.5 小時</span></div><p>地圖景點 5A。就在 iias 沖繩豐崎內，開館即入場最省時間。</p><div class="tags"><span class="tag">地圖 5A</span><span class="tag green">通常 09:00–19:00</span><span class="tag">最晚入館前 60 分</span></div><div class="actions"><a class="action primary" href="https://maps.google.com/?q=DMM+Kariyushi+Aquarium" target="_blank" rel="noopener"><svg class="icon"><use href="#map"/></svg>導航</a><a class="action" href="https://kariyushi-aquarium.com/opening-hours/" target="_blank" rel="noopener">當日營業</a></div></div></article>
@@ -443,7 +474,7 @@
       </section>
 
       <section class="day" id="d6" data-date="2026-10-12">
-        <div class="day-heading"><div><h2>返台</h2><p>國際線提早抵達機場</p></div><span class="route-distance">無租車</span></div>
+        <div class="day-heading"><div><h2>返台</h2><p>國際線提早抵達機場</p><div class="day-key-events" aria-label="今日重要交通"><span class="day-key-event">✈ 回程航班</span></div></div><span class="route-distance">無租車</span></div>
         <div class="timeline">
           <article class="stop lodging"><div class="time">06:30</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 退房前檢查</h3><span class="duration">30 分</span></div><p>護照、手機、錢包、充電器、退稅商品、托運液體。早餐以可外帶為主。</p></div></article>
           <article class="stop transport"><div class="time">07:00</div><div class="dot"></div><div class="stop-card"><div class="stop-title-row"><h3>La'gent 飯店 → 那霸機場</h3><span class="duration">依交通方式</span></div><p>可搭單軌或預約計程車；尖峰時段不要壓線。</p></div></article>
@@ -657,6 +688,13 @@
 
       function showDay(id, shouldScroll = true) {
         days.forEach(day => day.classList.toggle('active', day.id === id));
+        const selectedDate = days.find(day => day.id === id)?.dataset.date;
+        document.querySelectorAll('.transport-details').forEach(details => {
+          const reminders = [...details.querySelectorAll('[data-reminder-date]')];
+          const isRelevant = reminders.some(reminder => reminder.dataset.reminderDate === selectedDate);
+          details.classList.toggle('is-relevant', isRelevant);
+          reminders.forEach(reminder => { reminder.hidden = reminder.dataset.reminderDate !== selectedDate; });
+        });
         tabs.forEach(tab => {
           const active = tab.dataset.day === id;
           tab.classList.toggle('active', active);

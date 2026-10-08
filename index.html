@@ -210,6 +210,7 @@
     }
     .action.primary { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
     .action .icon { width: 15px; height: 15px; }
+    .action[hidden] { display: none; }
     .action.compact { min-height: 32px; padding: 5px 9px; font-size: .76rem; }
     .action.danger { color: var(--danger); }
 
@@ -236,14 +237,28 @@
     .field-input { width: 100%; min-height: 42px; padding: 8px 10px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; font-size: 16px; }
     .field-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
     .type-picker { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-    .type-picker button { min-height: 38px; padding: 0 4px; border: 1px solid oklch(.82 .02 48); border-radius: 9px; color: var(--muted); background: white; font-size: .82rem; font-weight: 750; cursor: pointer; }
-    .type-picker button[aria-pressed="true"] { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
+    .type-picker button, .verdict-picker button { min-height: 38px; padding: 0 4px; border: 1px solid oklch(.82 .02 48); border-radius: 9px; color: var(--muted); background: white; font-size: .82rem; font-weight: 750; cursor: pointer; }
+    .type-picker button[aria-pressed="true"], .verdict-picker button[aria-pressed="true"] { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
+    .verdict-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+    .verdict-picker button { min-height: 34px; padding: 0 10px; }
     .star-picker { display: flex; gap: 2px; }
     .star-picker button { width: 38px; height: 38px; padding: 0; border: 0; color: oklch(.86 .02 60); background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; }
     .star-picker button.on { color: oklch(.72 .15 72); }
     .journal-form textarea, .journal-memo textarea { min-height: 84px; font-size: 16px; }
     .journal-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
     .journal-memo { margin-top: 14px; }
+    .stop-review { margin-top: 10px; padding-top: 10px; border-top: 1px dashed oklch(.83 .02 48); }
+    .stop-review-view[hidden], .stop-review-form[hidden] { display: none; }
+    .stop-review-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .stop-review-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; color: var(--muted); font-size: .76rem; font-weight: 700; }
+    .stop .stop-review-note { margin: 5px 0 0; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .stop-review-form { display: grid; gap: 10px; }
+    .stop-review-form textarea { min-height: 72px; font-size: 16px; }
+    .stop-review-form .journal-form-actions .danger { margin-right: auto; }
+    .journal-review-list { margin: 8px 0 0; padding: 0; list-style: none; }
+    .journal-review-list li { padding: 9px 0; border-top: 1px solid var(--line); }
+    .journal-review-list strong { display: block; font-size: .9rem; }
+    .journal-review-list p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; white-space: pre-wrap; overflow-wrap: anywhere; }
     .journal-memo-print { display: none; }
 
     .journal-overview-day { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
@@ -360,6 +375,7 @@
       .stop-card { break-inside: avoid; }
       .day > details { display: none; }
       .journal { break-inside: avoid; border-color: var(--ink); }
+      .stop-review.is-empty, .stop-review button, .stop-review-form { display: none !important; }
       .journal.is-empty, .journal-form, .journal-add, .journal-empty, .journal-entry .actions, .journal-memo textarea, .journal-memo .save-state, .journal-memo .field-label { display: none !important; }
       .journal-memo-print:not(:empty) { display: block; white-space: pre-wrap; }
       .journal-memo-print:not(:empty)::before { content: "今日心得："; font-weight: 700; }
@@ -738,6 +754,7 @@
     <symbol id="checklist" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8M14 9h3M8 15l1.5 1.5L12 14M14 15h3"/></symbol>
     <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
     <symbol id="print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></symbol>
+    <symbol id="star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></symbol>
     <symbol id="pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
     <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/></symbol>
@@ -847,7 +864,7 @@
         catch { showToast('瀏覽器不允許自動複製'); }
       });
 
-      // ---- 旅途記錄：每日額外景點／餐廳／心得，儲存在 localStorage ----
+      // ---- 旅途記錄：每日額外景點／餐廳／心得與行程景點評價，儲存在 localStorage ----
       const JOURNAL_KEY = 'okinawa-journal-v1';
       const JOURNAL_APP = 'okinawa-2026-journal';
       const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -858,6 +875,13 @@
         other: { label: '其他', tag: 'plain', placeholder: '例如：古宇利大橋夕陽' }
       };
       const DEFAULT_TYPE = 'food';
+      const VERDICTS = {
+        must: { label: '必去推薦', tag: 'green' },
+        good: { label: '值得一去', tag: 'blue' },
+        ok: { label: '普通', tag: 'plain' },
+        skip: { label: '不推薦', tag: '' },
+        missed: { label: '沒去成', tag: 'plain' }
+      };
       const tripDates = days.map(day => day.dataset.date);
       const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
       const newId = () => (crypto.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`);
@@ -911,13 +935,35 @@
         };
       }
 
+      function normalizeReview(raw) {
+        if (!raw || typeof raw !== 'object') return null;
+        const review = {
+          rating: Math.min(5, Math.max(0, Math.round(Number(raw.rating) || 0))),
+          verdict: hasOwn(VERDICTS, raw.verdict) ? raw.verdict : '',
+          note: String(raw.note ?? '').trim().slice(0, 1000),
+          updatedAt: Number(raw.updatedAt) || Date.now()
+        };
+        return review.rating || review.verdict || review.note ? review : null;
+      }
+
+      function normalizeReviews(raw) {
+        const reviews = Object.create(null);
+        if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return reviews;
+        Object.entries(raw).slice(0, 100).forEach(([key, value]) => {
+          const review = key.length <= 80 ? normalizeReview(value) : null;
+          if (review) reviews[key] = review;
+        });
+        return reviews;
+      }
+
       function normalizeJournal(raw) {
         const result = { version: 1, days: {} };
         tripDates.forEach(date => {
           const src = raw?.days?.[date] || {};
           result.days[date] = {
             entries: Array.isArray(src.entries) ? src.entries.map(normalizeEntry).filter(Boolean) : [],
-            memo: typeof src.memo === 'string' ? src.memo.slice(0, 4000) : ''
+            memo: typeof src.memo === 'string' ? src.memo.slice(0, 4000) : '',
+            reviews: normalizeReviews(src.reviews)
           };
         });
         return result;
@@ -969,9 +1015,149 @@
         );
       }
 
-      function summarize(entries) {
+      function summarize(entries, reviewCount = 0) {
         const cost = entries.reduce((sum, e) => sum + (e.cost || 0), 0);
-        return entries.length ? `${entries.length} 筆${cost ? '・' + formatYen(cost) : ''}` : '';
+        return [
+          entries.length && `${entries.length} 筆`,
+          cost && formatYen(cost),
+          reviewCount && `評價 ${reviewCount}`
+        ].filter(Boolean).join('・');
+      }
+
+      // 依行程順序列出當日評價；行程標題若改過，舊評價仍保留在最後
+      function orderedReviews(date) {
+        const reviews = journal.days[date].reviews;
+        const planned = [...journalUi[date].reviews.keys()].filter(key => reviews[key]);
+        const orphaned = Object.keys(reviews).filter(key => !journalUi[date].reviews.has(key));
+        return [...planned, ...orphaned].map(key => [key, reviews[key]]);
+      }
+
+      function reviewSummary(review) {
+        const verdict = VERDICTS[review.verdict];
+        return el('div', { class: 'stop-review-summary' },
+          verdict && el('span', { class: `tag ${verdict.tag}`, text: verdict.label }),
+          review.rating > 0 && el('span', { class: 'journal-stars', 'aria-label': `評分 ${review.rating} 顆星`, text: formatStars(review.rating) })
+        );
+      }
+
+      function renderStopReview(date, key) {
+        const ui = journalUi[date].reviews.get(key);
+        const review = journal.days[date].reviews[key];
+        ui.root.classList.toggle('is-empty', !review);
+        ui.view.replaceChildren(review
+          ? el('div', {},
+              el('div', { class: 'stop-review-head' },
+                reviewSummary(review),
+                el('button', { class: 'action compact', type: 'button', 'data-review-edit': '' }, icon('pen'), '編輯評價')
+              ),
+              review.note && el('p', { class: 'stop-review-note', text: review.note })
+            )
+          : el('button', { class: 'action compact', type: 'button', 'data-review-edit': '' }, icon('star'), '留下評價'));
+      }
+
+      function setReviewVerdict(ui, verdict) {
+        ui.form.dataset.verdict = verdict;
+        ui.verdictButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.verdict === verdict)));
+      }
+
+      function openReview(date, key) {
+        const ui = journalUi[date].reviews.get(key);
+        const review = journal.days[date].reviews[key];
+        setReviewVerdict(ui, review?.verdict || '');
+        setFormRating(ui, review?.rating || 0);
+        ui.note.value = review?.note || '';
+        ui.deleteBtn.hidden = !review;
+        ui.view.hidden = true;
+        ui.form.hidden = false;
+        ui.form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      function closeReview(date, key) {
+        const ui = journalUi[date].reviews.get(key);
+        ui.form.hidden = true;
+        ui.view.hidden = false;
+      }
+
+      function saveReview(date, key, remove = false) {
+        const ui = journalUi[date].reviews.get(key);
+        const reviews = journal.days[date].reviews;
+        const existed = Boolean(reviews[key]);
+        const review = remove ? null : normalizeReview({
+          rating: Number(ui.form.dataset.rating),
+          verdict: ui.form.dataset.verdict,
+          note: ui.note.value,
+          updatedAt: Date.now()
+        });
+        if (remove && !confirm(`刪除「${key}」的評價？`)) return;
+        if (review) reviews[key] = review;
+        else if (!existed) { showToast('請至少選擇評分、推薦程度或填寫心得'); return; }
+        else delete reviews[key];
+        if (!saveJournal()) return;
+        closeReview(date, key);
+        renderDayJournal(date);
+        showToast(review ? '評價已儲存' : '評價已刪除');
+      }
+
+      function buildStopReviews(day) {
+        const date = day.dataset.date;
+        const map = new Map();
+        day.querySelectorAll('.stop:not(.transport):not(.lodging)').forEach((stop, index) => {
+          let key = stop.querySelector('h3').textContent.trim().slice(0, 70);
+          if (map.has(key)) key = `${key} #${index + 1}`;
+          const fieldId = `${day.id}-review-${index}`;
+          const root = el('div', { class: 'stop-review' });
+          root.innerHTML = `
+            <div class="stop-review-view"></div>
+            <form class="stop-review-form" hidden novalidate>
+              <div>
+                <span class="field-label" id="${fieldId}-verdict">推薦程度</span>
+                <div class="verdict-picker" role="group" aria-labelledby="${fieldId}-verdict">
+                  ${Object.entries(VERDICTS).map(([k, v]) => `<button type="button" data-verdict="${k}" aria-pressed="false">${v.label}</button>`).join('')}
+                </div>
+              </div>
+              <div>
+                <span class="field-label" id="${fieldId}-rating">評分（再點一次可取消）</span>
+                ${starPickerHtml(`${fieldId}-rating`)}
+              </div>
+              <div>
+                <label class="field-label" for="${fieldId}-note">遊玩心得（選填）</label>
+                <textarea id="${fieldId}-note" maxlength="1000" placeholder="好玩的地方、要避開的坑、適不適合小孩、停留多久剛好……"></textarea>
+              </div>
+              <div class="journal-form-actions">
+                <button type="button" class="action danger" data-review-delete>刪除</button>
+                <button type="button" class="action" data-review-cancel>取消</button>
+                <button type="submit" class="action primary">儲存評價</button>
+              </div>
+            </form>`;
+          stop.querySelector('.stop-card').append(root);
+          const ui = {
+            root,
+            view: root.querySelector('.stop-review-view'),
+            form: root.querySelector('.stop-review-form'),
+            verdictButtons: [...root.querySelectorAll('[data-verdict]')],
+            starButtons: [...root.querySelectorAll('[data-star]')],
+            note: root.querySelector('textarea'),
+            deleteBtn: root.querySelector('[data-review-delete]')
+          };
+          map.set(key, ui);
+          ui.view.addEventListener('click', event => { if (event.target.closest('[data-review-edit]')) openReview(date, key); });
+          ui.form.addEventListener('submit', event => { event.preventDefault(); saveReview(date, key); });
+          root.querySelector('[data-review-cancel]').addEventListener('click', () => closeReview(date, key));
+          ui.deleteBtn.addEventListener('click', () => saveReview(date, key, true));
+          ui.verdictButtons.forEach(btn => btn.addEventListener('click', () =>
+            setReviewVerdict(ui, ui.form.dataset.verdict === btn.dataset.verdict ? '' : btn.dataset.verdict)));
+          ui.starButtons.forEach(btn => btn.addEventListener('click', () => {
+            const star = Number(btn.dataset.star);
+            setFormRating(ui, Number(ui.form.dataset.rating) === star ? 0 : star);
+          }));
+        });
+        return map;
+      }
+
+      function starPickerHtml(labelId) {
+        return `<div class="star-picker" role="group" aria-labelledby="${labelId}">
+                  ${[1, 2, 3, 4, 5].map(n => `<button type="button" data-star="${n}" aria-label="${n} 顆星" aria-pressed="false">★</button>`).join('')}
+                </div>`;
       }
 
       function renderDayJournal(date) {
@@ -983,8 +1169,10 @@
         ui.empty.hidden = entries.length > 0;
         if (document.activeElement !== ui.memo) ui.memo.value = data.memo;
         ui.memoPrint.textContent = data.memo.trim();
-        const hasContent = entries.length > 0 || data.memo.trim() !== '';
-        ui.root.classList.toggle('is-empty', !hasContent);
+        ui.reviews.forEach((_, key) => renderStopReview(date, key));
+        const hasCardContent = entries.length > 0 || data.memo.trim() !== '';
+        const hasContent = hasCardContent || Object.keys(data.reviews).length > 0;
+        ui.root.classList.toggle('is-empty', !hasCardContent);
         ui.tab.classList.toggle('has-journal', hasContent);
         ui.tab.setAttribute('aria-label', `${dayLabel(ui.day)}${hasContent ? '，已有旅途記錄' : ''}`);
       }
@@ -1107,9 +1295,7 @@
             </div>
             <div>
               <span class="field-label" id="${id}-rating-label">評分（再點一次可取消）</span>
-              <div class="star-picker" role="group" aria-labelledby="${id}-rating-label">
-                ${[1, 2, 3, 4, 5].map(n => `<button type="button" data-star="${n}" aria-label="${n} 顆星" aria-pressed="false">★</button>`).join('')}
-              </div>
+              ${starPickerHtml(`${id}-rating-label`)}
             </div>
             <div>
               <label class="field-label" for="${id}-note">備註（選填）</label>
@@ -1146,7 +1332,8 @@
           note: root.querySelector(`#${id}-note`),
           memo: root.querySelector(`#${id}-memo`),
           memoState: root.querySelector('.journal-memo .save-state'),
-          memoPrint: root.querySelector('.journal-memo-print')
+          memoPrint: root.querySelector('.journal-memo-print'),
+          reviews: buildStopReviews(day)
         };
         journalUi[date] = ui;
 
@@ -1188,22 +1375,27 @@
           .map(([key, t]) => [t.label, all.filter(e => e.type === key).length])
           .filter(([, n]) => n > 0)
           .map(([label, n]) => `${label} ${n}`);
+        const reviewCount = tripDates.reduce((sum, date) => sum + Object.keys(journal.days[date].reviews).length, 0);
+        if (reviewCount) counts.push(`評價 ${reviewCount}`);
         document.getElementById('journalTypeBreakdown').textContent = counts.length ? counts.join('・') : '尚無記錄';
 
         const groups = days.map(day => {
           const date = day.dataset.date;
           const entries = sortedEntries(date);
           const memo = journal.days[date].memo.trim();
-          if (!entries.length && !memo) return null;
+          const reviews = orderedReviews(date);
+          if (!entries.length && !memo && !reviews.length) return null;
           return el('section', { class: 'journal-overview-day' },
             el('div', { class: 'journal-overview-head' },
-              el('h3', {}, el('small', { text: `${dayLabel(day)}　${summarize(entries)}` }), dayTitle(day)),
+              el('h3', {}, el('small', { text: `${dayLabel(day)}　${summarize(entries, reviews.length)}` }), dayTitle(day)),
               el('button', { class: 'action compact', type: 'button', onclick: () => {
                 setView('schedule');
                 showDay(day.id, false);
                 requestAnimationFrame(() => journalUi[date].root.scrollIntoView({ behavior: 'smooth', block: 'start' }));
               } }, '前往當日')
             ),
+            reviews.length > 0 && el('ul', { class: 'journal-review-list', 'aria-label': '行程評價' }, reviews.map(([key, review]) =>
+              el('li', {}, el('strong', { text: key }), reviewSummary(review), review.note && el('p', { text: review.note })))),
             entries.length > 0 && el('ul', { class: 'journal-list' }, entries.map(entry => renderEntry(entry, date, false))),
             memo && el('p', { class: 'journal-overview-memo', text: memo })
           );
@@ -1219,8 +1411,14 @@
           const date = day.dataset.date;
           const entries = sortedEntries(date);
           const memo = journal.days[date].memo.trim();
-          if (!entries.length && !memo) return;
+          const reviews = orderedReviews(date);
+          if (!entries.length && !memo && !reviews.length) return;
           lines.push('', `【${dayLabel(day)}】${dayTitle(day)}`);
+          reviews.forEach(([key, r]) => {
+            const meta = [r.rating ? formatStars(r.rating) : '', VERDICTS[r.verdict]?.label].filter(Boolean).join(' ');
+            lines.push(`◎ ${key}${meta ? '　' + meta : ''}`);
+            if (r.note) lines.push(...r.note.split('\n').map(line => '　' + line));
+          });
           entries.forEach(e => {
             const meta = [e.time, e.rating ? formatStars(e.rating) : '', e.cost != null ? formatYen(e.cost) : ''].filter(Boolean).join(' ');
             lines.push(`・${ENTRY_TYPES[e.type].label}｜${e.name}${meta ? '　' + meta : ''}`);
@@ -1242,6 +1440,11 @@
             const existing = byId.get(entry.id);
             if (!existing) { local.entries.push(entry); added++; }
             else if (entry.updatedAt > existing.updatedAt) { Object.assign(existing, entry); updated++; }
+          });
+          Object.entries(src.reviews).forEach(([key, review]) => {
+            const existing = local.reviews[key];
+            if (!existing) { local.reviews[key] = review; added++; }
+            else if (review.updatedAt > existing.updatedAt) { local.reviews[key] = review; updated++; }
           });
           const memo = src.memo.trim();
           if (memo && !local.memo.includes(memo)) local.memo = local.memo.trim() ? `${local.memo.trim()}\n\n${memo}` : memo;
@@ -1284,7 +1487,7 @@
           if (!saveJournal()) return;
           tripDates.forEach(renderDayJournal);
           renderJournalOverview();
-          showToast(`匯入完成：新增 ${added} 筆、更新 ${updated} 筆`);
+          showToast(`匯入完成：新增 ${added} 項、更新 ${updated} 項`);
         } catch {
           showToast('匯入失敗：不是有效的旅途記錄備份檔');
         }

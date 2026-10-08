@@ -38,7 +38,7 @@
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
-    button, a, textarea { font: inherit; }
+    button, a, textarea, input { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     a { color: inherit; }
     :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -141,6 +141,7 @@
     .day-nav { display: flex; gap: 6px; overflow-x: auto; padding: 0 14px; scrollbar-width: none; scroll-snap-type: x proximity; }
     .day-nav::-webkit-scrollbar { display: none; }
     .day-tab {
+      position: relative;
       flex: 0 0 auto;
       min-width: 56px;
       padding: 6px 9px;
@@ -155,6 +156,8 @@
     .day-tab span { display: block; font-size: .7rem; line-height: 1.15; }
     .day-tab strong { display: block; margin-top: 1px; font-size: .84rem; }
     .day-tab.active { color: white; background: var(--primary-dark); }
+    .day-tab.has-journal::after { content: ""; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+    .day-tab.active.has-journal::after { background: white; }
 
     main { padding: 4px 14px 0; }
     .day { display: none; padding-top: 16px; scroll-margin-top: 78px; animation: enter .18s cubic-bezier(.22, 1, .36, 1); }
@@ -187,6 +190,7 @@
     .tag { padding: 3px 7px; border-radius: 5px; color: oklch(.34 .055 47); background: oklch(.92 .035 63); font-size: .72rem; font-weight: 700; }
     .tag.blue { color: oklch(.31 .08 230); background: oklch(.91 .045 226); }
     .tag.green { color: oklch(.3 .085 150); background: oklch(.92 .05 151); }
+    .tag.plain { color: var(--muted); background: var(--surface); }
     .actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
     .action {
       display: inline-flex;
@@ -206,6 +210,48 @@
     }
     .action.primary { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
     .action .icon { width: 15px; height: 15px; }
+    .action.compact { min-height: 32px; padding: 5px 9px; font-size: .76rem; }
+    .action.danger { color: var(--danger); }
+
+    .journal { margin: 4px 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .journal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .journal-head h3 { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 1rem; }
+    .journal-head h3 .icon { color: var(--primary-dark); }
+    .journal-stat { flex: 0 0 auto; color: var(--muted); font-size: .75rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .journal-empty { margin: 6px 0 0; color: var(--muted); font-size: .82rem; }
+    .journal-empty[hidden] { display: none; }
+    .journal-list { margin: 8px 0 0; padding: 0; list-style: none; }
+    .journal-entry { padding: 11px 0; border-top: 1px solid var(--line); }
+    .journal-entry-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; color: var(--muted); font-size: .76rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .journal-entry h4 { margin: 5px 0 0; font-size: .95rem; line-height: 1.35; overflow-wrap: anywhere; }
+    .journal-entry p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .journal-entry .actions { margin-top: 8px; }
+    .journal-stars { color: oklch(.66 .15 70); letter-spacing: 1px; }
+    .journal-add { width: 100%; margin-top: 10px; border-style: dashed; color: var(--primary-dark); }
+    .journal-add[hidden] { display: none; }
+    .journal-form { display: grid; gap: 11px; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .journal-form[hidden] { display: none; }
+    .journal-form-title { margin: 0; font-size: .9rem; }
+    .field-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: .76rem; font-weight: 750; }
+    .field-input { width: 100%; min-height: 42px; padding: 8px 10px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; font-size: 16px; }
+    .field-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+    .type-picker { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .type-picker button { min-height: 38px; padding: 0 4px; border: 1px solid oklch(.82 .02 48); border-radius: 9px; color: var(--muted); background: white; font-size: .82rem; font-weight: 750; cursor: pointer; }
+    .type-picker button[aria-pressed="true"] { border-color: var(--primary-dark); color: white; background: var(--primary-dark); }
+    .star-picker { display: flex; gap: 2px; }
+    .star-picker button { width: 38px; height: 38px; padding: 0; border: 0; color: oklch(.86 .02 60); background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+    .star-picker button.on { color: oklch(.72 .15 72); }
+    .journal-form textarea, .journal-memo textarea { min-height: 84px; font-size: 16px; }
+    .journal-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .journal-memo { margin-top: 14px; }
+    .journal-memo-print { display: none; }
+
+    .journal-overview-day { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .journal-overview-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .journal-overview-head h3 { margin: 0; font-size: .98rem; line-height: 1.35; }
+    .journal-overview-head h3 small { display: block; color: var(--muted); font-size: .76rem; font-weight: 700; }
+    .journal-overview-memo { margin: 8px 0 0; padding: 10px 12px; border-radius: 10px; color: var(--ink); background: var(--surface); font-size: .84rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .journal-tools { margin: 14px 0 0; }
 
     .day > details { margin: 4px 0 18px 89px; border-top: 1px solid var(--line); }
     .day > details > summary { padding: 12px 0; color: var(--accent); font-size: .85rem; font-weight: 750; cursor: pointer; }
@@ -222,9 +268,9 @@
     textarea { width: 100%; min-height: 120px; resize: vertical; padding: 12px; border: 1px solid oklch(.78 .025 225); border-radius: 10px; color: var(--ink); background: white; line-height: 1.55; }
     .save-state { margin-top: 6px; color: var(--muted); font-size: .75rem; }
 
-    .info-section, .prep-section, .map-section, .cost-section, .more-section { display: none; padding: 22px 14px 0; }
-    .info-section.active, .prep-section.active, .map-section.active, .cost-section.active, .more-section.active { display: block; }
-    .info-section h2, .prep-section > h2, .map-section > h2, .cost-section > h2, .more-section > h2 { margin: 0 0 12px; font-size: 1.28rem; }
+    .info-section, .prep-section, .map-section, .cost-section, .more-section, .journal-section { display: none; padding: 22px 14px 0; }
+    .info-section.active, .prep-section.active, .map-section.active, .cost-section.active, .more-section.active, .journal-section.active { display: block; }
+    .info-section h2, .prep-section > h2, .map-section > h2, .cost-section > h2, .more-section > h2, .journal-section > h2 { margin: 0 0 12px; font-size: 1.28rem; }
     .prep-section .panel { margin-top: 12px; }
     .map-section > p { margin: -4px 0 14px; color: var(--muted); font-size: .84rem; }
     .map-frame { display: block; overflow: hidden; border-radius: var(--radius); background: var(--accent); }
@@ -299,7 +345,7 @@
       body { background: oklch(.95 .008 225); }
       .shell { min-height: 100vh; background: white; box-shadow: 0 0 8px oklch(.2 0 0 / .08); }
       .hero { padding-left: 28px; padding-right: 28px; }
-      .essentials, main, .info-section, .prep-section, .map-section, .cost-section, .more-section { padding-left: 22px; padding-right: 22px; }
+      .essentials, main, .info-section, .prep-section, .map-section, .cost-section, .more-section, .journal-section { padding-left: 22px; padding-right: 22px; }
       .day-nav { padding-left: 22px; padding-right: 22px; }
     }
     @media print {
@@ -313,6 +359,10 @@
       .day:first-of-type { break-before: auto; }
       .stop-card { break-inside: avoid; }
       .day > details { display: none; }
+      .journal { break-inside: avoid; border-color: var(--ink); }
+      .journal.is-empty, .journal-form, .journal-add, .journal-empty, .journal-entry .actions, .journal-memo textarea, .journal-memo .save-state, .journal-memo .field-label { display: none !important; }
+      .journal-memo-print:not(:empty) { display: block; white-space: pre-wrap; }
+      .journal-memo-print:not(:empty)::before { content: "今日心得："; font-weight: 700; }
       .transport-details > summary { display: none; }
       .transport-details > .transport-grid { display: grid !important; }
     }
@@ -490,10 +540,37 @@
       <h2 id="moreTitle">更多工具</h2>
       <p class="more-intro">較少使用的資料集中放在這裡，需要時再開啟。</p>
       <ul class="more-list">
+        <li><button class="more-action" data-more-view="journal"><svg class="icon" aria-hidden="true"><use href="#pen"/></svg><span><strong>旅途記錄</strong><span>每日額外景點、餐廳與心得總覽、備份</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
         <li><button class="more-action" data-more-view="cost"><svg class="icon" aria-hidden="true"><use href="#wallet"/></svg><span><strong>旅費整理</strong><span>機票、住宿與租車費用</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
         <li><button class="more-action" data-more-view="prep"><svg class="icon" aria-hidden="true"><use href="#checklist"/></svg><span><strong>行前準備</strong><span>出發清單與旅行備忘</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
         <li><button class="more-action" data-more-view="info"><svg class="icon" aria-hidden="true"><use href="#info"/></svg><span><strong>實用資訊</strong><span>緊急電話、道路救援與注意事項</span></span><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button></li>
       </ul>
+    </section>
+
+    <section class="journal-section" id="journalView" aria-labelledby="journalTitle">
+      <button class="section-back" data-back-view="more"><svg class="icon" aria-hidden="true"><use href="#arrow-left"/></svg>返回更多</button>
+      <h2 id="journalTitle">旅途記錄</h2>
+      <p class="more-intro">在每日行程最下方新增記錄；這裡彙整全部內容，並可分享或備份。</p>
+      <div class="cost-summary" aria-label="記錄摘要">
+        <div class="cost-total">
+          <span>記錄筆數</span>
+          <strong id="journalTotalCount">0 筆</strong>
+          <small id="journalTypeBreakdown">尚無記錄</small>
+        </div>
+        <div class="cost-total">
+          <span>記錄花費</span>
+          <strong id="journalTotalCost">¥0</strong>
+          <small>只計有填金額的項目</small>
+        </div>
+      </div>
+      <div class="actions journal-tools">
+        <button class="action primary" id="journalCopyBtn"><svg class="icon" aria-hidden="true"><use href="#copy"/></svg>複製文字</button>
+        <button class="action" id="journalExportBtn"><svg class="icon" aria-hidden="true"><use href="#download"/></svg>匯出備份</button>
+        <button class="action" id="journalImportBtn"><svg class="icon" aria-hidden="true"><use href="#upload"/></svg>匯入備份</button>
+        <input type="file" id="journalImportFile" accept="application/json,.json" hidden>
+      </div>
+      <div class="currency-note"><svg class="icon" aria-hidden="true"><use href="#info"/></svg><span>記錄只存在這台裝置的瀏覽器。清除瀏覽資料、換手機，或 iPhone Safari 長時間未開啟本站都可能遺失，建議每天匯出一次備份。同行者可互傳備份檔再匯入，相同記錄不會重複。</span></div>
+      <div id="journalOverview"></div>
     </section>
 
     <section class="prep-section" id="prepView" aria-labelledby="prepTitle">
@@ -661,6 +738,11 @@
     <symbol id="checklist" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8M14 9h3M8 15l1.5 1.5L12 14M14 15h3"/></symbol>
     <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
     <symbol id="print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></symbol>
+    <symbol id="pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/></symbol>
+    <symbol id="download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+    <symbol id="upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
     <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
   </svg>
 
@@ -675,6 +757,7 @@
       const costView = document.getElementById('costView');
       const infoView = document.getElementById('infoView');
       const moreView = document.getElementById('moreView');
+      const journalView = document.getElementById('journalView');
       const dayNavWrap = document.getElementById('dayNavWrap');
       const toast = document.getElementById('toast');
       let toastTimer;
@@ -713,6 +796,7 @@
         const isMap = view === 'map';
         const isCost = view === 'cost';
         const isMore = view === 'more';
+        const isJournal = view === 'journal';
         const isSchedule = view === 'schedule';
         scheduleView.style.display = isSchedule ? 'block' : 'none';
         prepView.classList.toggle('active', isPrep);
@@ -720,6 +804,8 @@
         costView.classList.toggle('active', isCost);
         infoView.classList.toggle('active', isInfo);
         moreView.classList.toggle('active', isMore);
+        journalView.classList.toggle('active', isJournal);
+        if (isJournal) renderJournalOverview();
         dayNavWrap.style.display = isSchedule ? 'block' : 'none';
         const activeNav = isSchedule ? 'schedule' : isMap ? 'map' : 'more';
         bottomActions.forEach(btn => {
@@ -759,6 +845,449 @@
         const summary = `沖繩 2026/10/6–10/12\n10/6 抵達、OTS 臨空豐崎取車\n10/7 名護自然動植物公園、古宇利島\n10/8 美麗海水族館、翡翠海灘\n10/9 沖繩兒童王國、AEON Rycom、東南植物樂園\n10/10 沖繩世界／玉泉洞、安良波海灘、美國村\n10/11 DMM 水族館、PARCO CITY、17:00 DFS 還車、國際通\n10/12 IT231 10:10 返回桃園`;
         try { await navigator.clipboard.writeText(summary); showToast('行程摘要已複製'); }
         catch { showToast('瀏覽器不允許自動複製'); }
+      });
+
+      // ---- 旅途記錄：每日額外景點／餐廳／心得，儲存在 localStorage ----
+      const JOURNAL_KEY = 'okinawa-journal-v1';
+      const JOURNAL_APP = 'okinawa-2026-journal';
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const ENTRY_TYPES = {
+        spot: { label: '景點', tag: 'blue', placeholder: '例如：瀨長島 Umikaji Terrace' },
+        food: { label: '美食', tag: '', placeholder: '例如：通堂拉麵 小禄本店' },
+        shop: { label: '購物', tag: 'green', placeholder: '例如：唐吉訶德 國際通店' },
+        other: { label: '其他', tag: 'plain', placeholder: '例如：古宇利大橋夕陽' }
+      };
+      const DEFAULT_TYPE = 'food';
+      const tripDates = days.map(day => day.dataset.date);
+      const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+      const newId = () => (crypto.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`);
+      const formatYen = n => '¥' + n.toLocaleString('ja-JP');
+      const formatStars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+      const tokyoNow = () => {
+        const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+          .formatToParts(new Date()).map(p => [p.type, p.value]));
+        return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
+      };
+
+      function el(tag, props = {}, ...children) {
+        const node = document.createElement(tag);
+        Object.entries(props).forEach(([key, value]) => {
+          if (value == null || value === false) return;
+          if (key === 'class') node.className = value;
+          else if (key === 'text') node.textContent = value;
+          else if (key.startsWith('on')) node.addEventListener(key.slice(2), value);
+          else node.setAttribute(key, value === true ? '' : value);
+        });
+        children.flat().forEach(child => { if (child != null && child !== false && child !== '') node.append(child); });
+        return node;
+      }
+
+      function icon(name) {
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('class', 'icon');
+        svg.setAttribute('aria-hidden', 'true');
+        const use = document.createElementNS(SVG_NS, 'use');
+        use.setAttribute('href', '#' + name);
+        svg.append(use);
+        return svg;
+      }
+
+      function normalizeEntry(raw) {
+        if (!raw || typeof raw !== 'object') return null;
+        const name = String(raw.name ?? '').trim().slice(0, 80);
+        if (!name) return null;
+        const cost = Number(raw.cost);
+        const now = Date.now();
+        return {
+          id: String(raw.id ?? '').slice(0, 64) || newId(),
+          type: hasOwn(ENTRY_TYPES, raw.type) ? raw.type : 'other',
+          name,
+          time: /^([01]\d|2[0-3]):[0-5]\d$/.test(String(raw.time ?? '')) ? raw.time : '',
+          note: String(raw.note ?? '').slice(0, 1000),
+          rating: Math.min(5, Math.max(0, Math.round(Number(raw.rating) || 0))),
+          cost: raw.cost !== null && raw.cost !== '' && Number.isFinite(cost) && cost >= 0 ? Math.min(Math.round(cost), 99999999) : null,
+          createdAt: Number(raw.createdAt) || now,
+          updatedAt: Number(raw.updatedAt) || now
+        };
+      }
+
+      function normalizeJournal(raw) {
+        const result = { version: 1, days: {} };
+        tripDates.forEach(date => {
+          const src = raw?.days?.[date] || {};
+          result.days[date] = {
+            entries: Array.isArray(src.entries) ? src.entries.map(normalizeEntry).filter(Boolean) : [],
+            memo: typeof src.memo === 'string' ? src.memo.slice(0, 4000) : ''
+          };
+        });
+        return result;
+      }
+
+      function loadJournal() {
+        try { return normalizeJournal(JSON.parse(localStorage.getItem(JOURNAL_KEY) || 'null')); }
+        catch { return normalizeJournal(null); }
+      }
+
+      function saveJournal() {
+        try {
+          localStorage.setItem(JOURNAL_KEY, JSON.stringify(journal));
+          return true;
+        } catch {
+          showToast('儲存失敗：瀏覽器停用儲存或空間不足');
+          return false;
+        }
+      }
+
+      const journal = loadJournal();
+      const journalUi = {};
+
+      const sortedEntries = date => [...journal.days[date].entries].sort((a, b) =>
+        (a.time && b.time ? a.time.localeCompare(b.time) : a.time ? -1 : b.time ? 1 : 0) || a.createdAt - b.createdAt);
+      const dayLabel = day => {
+        const tab = tabs.find(t => t.dataset.day === day.id);
+        return `${tab.querySelector('strong').textContent}（${tab.querySelector('span').textContent}）`;
+      };
+      const dayTitle = day => day.querySelector('.day-heading h2').textContent;
+      const mapsUrl = name => 'https://maps.google.com/?q=' + encodeURIComponent(`${name} 沖繩`);
+
+      function renderEntry(entry, date, editable) {
+        const type = ENTRY_TYPES[entry.type];
+        return el('li', { class: 'journal-entry' },
+          el('div', { class: 'journal-entry-meta' },
+            el('span', { class: `tag ${type.tag}`, text: type.label }),
+            entry.time && el('span', { text: entry.time }),
+            entry.rating > 0 && el('span', { class: 'journal-stars', 'aria-label': `評分 ${entry.rating} 顆星`, text: formatStars(entry.rating) }),
+            entry.cost != null && el('span', { text: formatYen(entry.cost) })
+          ),
+          el('h4', { text: entry.name }),
+          entry.note && el('p', { text: entry.note }),
+          el('div', { class: 'actions' },
+            el('a', { class: 'action compact', href: mapsUrl(entry.name), target: '_blank', rel: 'noopener' }, icon('map'), '地圖'),
+            editable && el('button', { class: 'action compact', type: 'button', 'data-edit': entry.id, 'data-date': date }, icon('pen'), '編輯'),
+            editable && el('button', { class: 'action compact danger', type: 'button', 'data-delete': entry.id, 'data-date': date }, icon('trash'), '刪除')
+          )
+        );
+      }
+
+      function summarize(entries) {
+        const cost = entries.reduce((sum, e) => sum + (e.cost || 0), 0);
+        return entries.length ? `${entries.length} 筆${cost ? '・' + formatYen(cost) : ''}` : '';
+      }
+
+      function renderDayJournal(date) {
+        const ui = journalUi[date];
+        const data = journal.days[date];
+        const entries = sortedEntries(date);
+        ui.list.replaceChildren(...entries.map(entry => renderEntry(entry, date, true)));
+        ui.stat.textContent = summarize(entries);
+        ui.empty.hidden = entries.length > 0;
+        if (document.activeElement !== ui.memo) ui.memo.value = data.memo;
+        ui.memoPrint.textContent = data.memo.trim();
+        const hasContent = entries.length > 0 || data.memo.trim() !== '';
+        ui.root.classList.toggle('is-empty', !hasContent);
+        ui.tab.classList.toggle('has-journal', hasContent);
+        ui.tab.setAttribute('aria-label', `${dayLabel(ui.day)}${hasContent ? '，已有旅途記錄' : ''}`);
+      }
+
+      function setFormType(ui, type) {
+        ui.form.dataset.type = type;
+        ui.typeButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.type === type)));
+        ui.name.placeholder = ENTRY_TYPES[type].placeholder;
+      }
+
+      function setFormRating(ui, rating) {
+        ui.form.dataset.rating = String(rating);
+        ui.starButtons.forEach((btn, i) => {
+          btn.classList.toggle('on', i < rating);
+          btn.setAttribute('aria-pressed', String(i + 1 === rating));
+        });
+      }
+
+      function openForm(date, entry) {
+        const ui = journalUi[date];
+        ui.form.dataset.editId = entry?.id || '';
+        ui.formTitle.textContent = entry ? '編輯記錄' : '新增記錄';
+        ui.submit.textContent = entry ? '更新記錄' : '儲存記錄';
+        setFormType(ui, entry?.type || DEFAULT_TYPE);
+        setFormRating(ui, entry?.rating || 0);
+        ui.name.value = entry?.name || '';
+        const now = tokyoNow();
+        ui.time.value = entry ? entry.time : (now.date === date ? now.time : '');
+        ui.cost.value = entry?.cost ?? '';
+        ui.note.value = entry?.note || '';
+        ui.form.hidden = false;
+        ui.add.hidden = true;
+        ui.form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        ui.name.focus({ preventScroll: true });
+      }
+
+      function closeForm(date) {
+        const ui = journalUi[date];
+        ui.form.hidden = true;
+        ui.form.reset();
+        ui.form.dataset.editId = '';
+        ui.add.hidden = false;
+      }
+
+      function submitForm(date) {
+        const ui = journalUi[date];
+        const name = ui.name.value.trim();
+        if (!name) {
+          showToast('請輸入名稱');
+          ui.name.focus();
+          return;
+        }
+        const costText = ui.cost.value.trim();
+        const editId = ui.form.dataset.editId;
+        const list = journal.days[date].entries;
+        const existing = editId ? list.find(e => e.id === editId) : null;
+        const entry = normalizeEntry({
+          id: existing?.id || newId(),
+          type: ui.form.dataset.type,
+          name,
+          time: ui.time.value,
+          note: ui.note.value.trim(),
+          rating: Number(ui.form.dataset.rating),
+          cost: costText === '' ? null : costText,
+          createdAt: existing?.createdAt || Date.now(),
+          updatedAt: Date.now()
+        });
+        if (existing) Object.assign(existing, entry);
+        else list.push(entry);
+        if (!saveJournal()) return;
+        closeForm(date);
+        renderDayJournal(date);
+        showToast(existing ? '記錄已更新' : '記錄已新增');
+      }
+
+      function deleteEntry(date, id) {
+        const list = journal.days[date].entries;
+        const index = list.findIndex(e => e.id === id);
+        if (index < 0 || !confirm(`刪除「${list[index].name}」這筆記錄？`)) return;
+        list.splice(index, 1);
+        if (journalUi[date].form.dataset.editId === id) closeForm(date);
+        saveJournal();
+        renderDayJournal(date);
+        showToast('記錄已刪除');
+      }
+
+      function buildDayJournal(day) {
+        const date = day.dataset.date;
+        const id = day.id;
+        const root = el('section', { class: 'journal', 'aria-labelledby': `${id}-journal-title` });
+        root.innerHTML = `
+          <div class="journal-head">
+            <h3 id="${id}-journal-title"><svg class="icon" aria-hidden="true"><use href="#pen"/></svg>旅途記錄</h3>
+            <span class="journal-stat"></span>
+          </div>
+          <p class="journal-empty">多去的景點、吃到的特色餐廳、值得推薦的店，都可以記在這裡。</p>
+          <ul class="journal-list"></ul>
+          <button type="button" class="action journal-add"><svg class="icon" aria-hidden="true"><use href="#plus"/></svg>新增記錄</button>
+          <form class="journal-form" hidden novalidate>
+            <h4 class="journal-form-title">新增記錄</h4>
+            <div>
+              <span class="field-label" id="${id}-type-label">類型</span>
+              <div class="type-picker" role="group" aria-labelledby="${id}-type-label">
+                ${Object.entries(ENTRY_TYPES).map(([key, t]) => `<button type="button" data-type="${key}" aria-pressed="false">${t.label}</button>`).join('')}
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="${id}-name">名稱</label>
+              <input class="field-input" type="text" id="${id}-name" maxlength="80" autocomplete="off" enterkeyhint="done">
+            </div>
+            <div class="field-row">
+              <div>
+                <label class="field-label" for="${id}-time">時間（選填）</label>
+                <input class="field-input" type="time" id="${id}-time">
+              </div>
+              <div>
+                <label class="field-label" for="${id}-cost">花費 ¥（選填）</label>
+                <input class="field-input" type="number" id="${id}-cost" inputmode="numeric" min="0" step="1" placeholder="例如 3200">
+              </div>
+            </div>
+            <div>
+              <span class="field-label" id="${id}-rating-label">評分（再點一次可取消）</span>
+              <div class="star-picker" role="group" aria-labelledby="${id}-rating-label">
+                ${[1, 2, 3, 4, 5].map(n => `<button type="button" data-star="${n}" aria-label="${n} 顆星" aria-pressed="false">★</button>`).join('')}
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="${id}-note">備註（選填）</label>
+              <textarea id="${id}-note" maxlength="1000" placeholder="必點菜色、價位、排隊時間、停車方式、值不值得再來……"></textarea>
+            </div>
+            <div class="journal-form-actions">
+              <button type="button" class="action" data-cancel>取消</button>
+              <button type="submit" class="action primary">儲存記錄</button>
+            </div>
+          </form>
+          <div class="journal-memo">
+            <label class="field-label" for="${id}-memo">今日心得</label>
+            <textarea id="${id}-memo" maxlength="4000" placeholder="今天最喜歡的瞬間、行程調整、下次想改的地方……"></textarea>
+            <div class="save-state">自動儲存在這台裝置</div>
+            <div class="journal-memo-print"></div>
+          </div>`;
+        day.append(root);
+
+        const ui = {
+          day, root,
+          tab: tabs.find(t => t.dataset.day === id),
+          stat: root.querySelector('.journal-stat'),
+          empty: root.querySelector('.journal-empty'),
+          list: root.querySelector('.journal-list'),
+          add: root.querySelector('.journal-add'),
+          form: root.querySelector('.journal-form'),
+          formTitle: root.querySelector('.journal-form-title'),
+          submit: root.querySelector('.journal-form button[type="submit"]'),
+          typeButtons: [...root.querySelectorAll('[data-type]')],
+          starButtons: [...root.querySelectorAll('[data-star]')],
+          name: root.querySelector(`#${id}-name`),
+          time: root.querySelector(`#${id}-time`),
+          cost: root.querySelector(`#${id}-cost`),
+          note: root.querySelector(`#${id}-note`),
+          memo: root.querySelector(`#${id}-memo`),
+          memoState: root.querySelector('.journal-memo .save-state'),
+          memoPrint: root.querySelector('.journal-memo-print')
+        };
+        journalUi[date] = ui;
+
+        ui.add.addEventListener('click', () => openForm(date));
+        ui.form.addEventListener('submit', event => { event.preventDefault(); submitForm(date); });
+        ui.form.querySelector('[data-cancel]').addEventListener('click', () => closeForm(date));
+        ui.typeButtons.forEach(btn => btn.addEventListener('click', () => setFormType(ui, btn.dataset.type)));
+        ui.starButtons.forEach(btn => btn.addEventListener('click', () => {
+          const star = Number(btn.dataset.star);
+          setFormRating(ui, Number(ui.form.dataset.rating) === star ? 0 : star);
+        }));
+        ui.list.addEventListener('click', event => {
+          const editBtn = event.target.closest('[data-edit]');
+          const deleteBtn = event.target.closest('[data-delete]');
+          if (editBtn) openForm(date, journal.days[date].entries.find(e => e.id === editBtn.dataset.edit));
+          else if (deleteBtn) deleteEntry(date, deleteBtn.dataset.delete);
+        });
+
+        let memoTimer;
+        ui.memo.addEventListener('input', () => {
+          ui.memoState.textContent = '儲存中…';
+          clearTimeout(memoTimer);
+          memoTimer = setTimeout(() => {
+            journal.days[date].memo = ui.memo.value;
+            if (saveJournal()) ui.memoState.textContent = '已儲存在這台裝置';
+            renderDayJournal(date);
+          }, 400);
+        });
+
+        renderDayJournal(date);
+      }
+
+      function renderJournalOverview() {
+        const all = tripDates.flatMap(date => journal.days[date].entries);
+        const totalCost = all.reduce((sum, e) => sum + (e.cost || 0), 0);
+        document.getElementById('journalTotalCount').textContent = `${all.length} 筆`;
+        document.getElementById('journalTotalCost').textContent = formatYen(totalCost);
+        const counts = Object.entries(ENTRY_TYPES)
+          .map(([key, t]) => [t.label, all.filter(e => e.type === key).length])
+          .filter(([, n]) => n > 0)
+          .map(([label, n]) => `${label} ${n}`);
+        document.getElementById('journalTypeBreakdown').textContent = counts.length ? counts.join('・') : '尚無記錄';
+
+        const groups = days.map(day => {
+          const date = day.dataset.date;
+          const entries = sortedEntries(date);
+          const memo = journal.days[date].memo.trim();
+          if (!entries.length && !memo) return null;
+          return el('section', { class: 'journal-overview-day' },
+            el('div', { class: 'journal-overview-head' },
+              el('h3', {}, el('small', { text: `${dayLabel(day)}　${summarize(entries)}` }), dayTitle(day)),
+              el('button', { class: 'action compact', type: 'button', onclick: () => {
+                setView('schedule');
+                showDay(day.id, false);
+                requestAnimationFrame(() => journalUi[date].root.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+              } }, '前往當日')
+            ),
+            entries.length > 0 && el('ul', { class: 'journal-list' }, entries.map(entry => renderEntry(entry, date, false))),
+            memo && el('p', { class: 'journal-overview-memo', text: memo })
+          );
+        }).filter(Boolean);
+        document.getElementById('journalOverview').replaceChildren(
+          ...(groups.length ? groups : [el('p', { class: 'journal-empty', text: '還沒有任何記錄。到「每日行程」各天最下方點「新增記錄」開始記錄。' })])
+        );
+      }
+
+      function journalAsText() {
+        const lines = ['沖繩 7 日自駕｜旅途記錄'];
+        days.forEach(day => {
+          const date = day.dataset.date;
+          const entries = sortedEntries(date);
+          const memo = journal.days[date].memo.trim();
+          if (!entries.length && !memo) return;
+          lines.push('', `【${dayLabel(day)}】${dayTitle(day)}`);
+          entries.forEach(e => {
+            const meta = [e.time, e.rating ? formatStars(e.rating) : '', e.cost != null ? formatYen(e.cost) : ''].filter(Boolean).join(' ');
+            lines.push(`・${ENTRY_TYPES[e.type].label}｜${e.name}${meta ? '　' + meta : ''}`);
+            if (e.note) lines.push(...e.note.split('\n').map(line => '　' + line));
+          });
+          if (memo) lines.push(`心得：${memo}`);
+        });
+        return lines.length > 1 ? lines.join('\n') : '';
+      }
+
+      function mergeJournal(incoming) {
+        let added = 0;
+        let updated = 0;
+        tripDates.forEach(date => {
+          const local = journal.days[date];
+          const src = incoming.days[date];
+          const byId = new Map(local.entries.map(e => [e.id, e]));
+          src.entries.forEach(entry => {
+            const existing = byId.get(entry.id);
+            if (!existing) { local.entries.push(entry); added++; }
+            else if (entry.updatedAt > existing.updatedAt) { Object.assign(existing, entry); updated++; }
+          });
+          const memo = src.memo.trim();
+          if (memo && !local.memo.includes(memo)) local.memo = local.memo.trim() ? `${local.memo.trim()}\n\n${memo}` : memo;
+        });
+        return { added, updated };
+      }
+
+      days.forEach(buildDayJournal);
+
+      document.getElementById('journalCopyBtn').addEventListener('click', async () => {
+        const text = journalAsText();
+        if (!text) { showToast('目前還沒有記錄'); return; }
+        try { await navigator.clipboard.writeText(text); showToast('記錄已複製，可貼到 LINE'); }
+        catch { showToast('瀏覽器不允許自動複製'); }
+      });
+
+      document.getElementById('journalExportBtn').addEventListener('click', () => {
+        const now = tokyoNow();
+        const payload = { app: JOURNAL_APP, version: 1, exportedAt: new Date().toISOString(), days: journal.days };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+        const link = el('a', { href: url, download: `okinawa-journal-${now.date.replaceAll('-', '')}-${now.time.replace(':', '')}.json` });
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('備份檔已下載');
+      });
+
+      const importFile = document.getElementById('journalImportFile');
+      document.getElementById('journalImportBtn').addEventListener('click', () => importFile.click());
+      importFile.addEventListener('change', async () => {
+        const file = importFile.files[0];
+        importFile.value = '';
+        if (!file) return;
+        try {
+          if (file.size > 2 * 1024 * 1024) throw new Error('too large');
+          const raw = JSON.parse(await file.text());
+          if (raw?.app !== JOURNAL_APP) throw new Error('unknown format');
+          const { added, updated } = mergeJournal(normalizeJournal(raw));
+          if (!saveJournal()) return;
+          tripDates.forEach(renderDayJournal);
+          renderJournalOverview();
+          showToast(`匯入完成：新增 ${added} 筆、更新 ${updated} 筆`);
+        } catch {
+          showToast('匯入失敗：不是有效的旅途記錄備份檔');
+        }
       });
 
       const saved = localStorage.getItem('okinawa-active-day');
